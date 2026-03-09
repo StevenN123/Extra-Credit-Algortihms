@@ -1,0 +1,596 @@
+<!DOCTYPE html> <!-- Declares HTML5 document type -->
+<html lang="en"> <!-- Opens HTML document with English language -->
+<head> <!-- Head section contains metadata and links -->
+    <meta charset="UTF-8"> <!-- Character encoding UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design viewport -->
+    <title>Huffman Coding - Greedy Algorithm</title> <!-- Browser tab title -->
+    <style> /* CSS styles start */
+        * { /* Universal reset */
+            margin: 0; /* Remove default margins */
+            padding: 0; /* Remove default padding */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        
+        body { /* Body styling */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Font stack */
+            line-height: 1.6; /* Line height for readability */
+            color: #333; /* Text color */
+            background: #f5f5f5; /* Light gray background */
+        }
+        
+        .container { /* Main container */
+            max-width: 1000px; /* Maximum width */
+            margin: 0 auto; /* Center horizontally */
+            padding: 2rem; /* Internal padding */
+        }
+        
+        /* Header Section */
+        .header { /* Page header */
+            background: linear-gradient(135deg, #f39c12, #e67e22); /* Orange gradient */
+            color: white; /* White text */
+            padding: 2rem; /* Padding */
+            border-radius: 10px; /* Rounded corners */
+            margin-bottom: 2rem; /* Bottom margin */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Shadow */
+        }
+        
+        h1 { /* Main heading */
+            font-size: 2.5rem; /* 40px font */
+            margin-bottom: 0.5rem; /* Bottom margin */
+        }
+        
+        .subtitle { /* Subtitle style */
+            font-size: 1.1rem; /* 17.6px font */
+            opacity: 0.9; /* Slight transparency */
+        }
+        
+        /* Navigation */
+        .nav-bar { /* Navigation bar */
+            display: flex; /* Flexbox layout */
+            justify-content: space-between; /* Space between items */
+            align-items: center; /* Center vertically */
+            margin-bottom: 2rem; /* Bottom margin */
+            flex-wrap: wrap; /* Wrap on mobile */
+            gap: 1rem; /* Gap between wrapped items */
+        }
+        
+        .back-btn { /* Back button style */
+            display: inline-block; /* Inline with padding */
+            padding: 0.5rem 1rem; /* Padding */
+            background: #f39c12; /* Orange background */
+            color: white; /* White text */
+            text-decoration: none; /* No underline */
+            border-radius: 5px; /* Rounded corners */
+            transition: background 0.3s; /* Smooth hover */
+        }
+        
+        .back-btn:hover { /* Back button hover */
+            background: #e67e22; /* Darker orange */
+        }
+        
+        .repo-btn { /* Repository button */
+            background: #24292e; /* GitHub dark color */
+        }
+        
+        .repo-btn:hover { /* Repository button hover */
+            background: #2c3e50; /* Darker blue-gray */
+        }
+        
+        /* Content Sections */
+        .section { /* Content section */
+            background: white; /* White background */
+            padding: 2rem; /* Padding */
+            border-radius: 10px; /* Rounded corners */
+            margin-bottom: 2rem; /* Bottom margin */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Light shadow */
+        }
+        
+        h2 { /* Section heading */
+            color: #f39c12; /* Orange color */
+            margin-bottom: 1.5rem; /* Bottom margin */
+            border-bottom: 2px solid #f39c12; /* Orange bottom border */
+            padding-bottom: 0.5rem; /* Padding below */
+        }
+        
+        h3 { /* Subsection heading */
+            margin: 1.5rem 0 1rem; /* Top, sides, bottom margins */
+            color: #555; /* Gray color */
+        }
+        
+        /* Problem Description */
+        .problem-statement { /* Problem statement box */
+            background: #f8f9fa; /* Light gray */
+            padding: 1.5rem; /* Padding */
+            border-radius: 8px; /* Rounded corners */
+            border-left: 4px solid #f39c12; /* Orange left border */
+            margin-bottom: 1.5rem; /* Bottom margin */
+        }
+        
+        .complexity { /* Complexity container */
+            display: flex; /* Flexbox */
+            gap: 2rem; /* Gap between items */
+            margin: 1rem 0; /* Vertical margin */
+            padding: 1rem; /* Padding */
+            background: #f8f9fa; /* Light gray */
+            border-radius: 5px; /* Rounded corners */
+            flex-wrap: wrap; /* Wrap on mobile */
+        }
+        
+        .complexity-item { /* Individual complexity item */
+            text-align: center; /* Centered text */
+        }
+        
+        .complexity-value { /* Complexity value */
+            font-size: 1.5rem; /* 24px font */
+            font-weight: bold; /* Bold */
+            color: #f39c12; /* Orange */
+        }
+        
+        /* Code Section */
+        .code-block { /* Code container */
+            background: #2c3e50; /* Dark blue-gray */
+            color: #ecf0f1; /* Light text */
+            padding: 1.5rem; /* Padding */
+            border-radius: 5px; /* Rounded corners */
+            overflow-x: auto; /* Horizontal scroll if needed */
+            font-family: 'Courier New', monospace; /* Monospace font */
+            margin: 1.5rem 0; /* Vertical margin */
+            line-height: 1.4; /* Line height */
+        }
+        
+        .code-block pre { /* Preformatted text inside code block */
+            margin: 0; /* Remove default margin */
+            white-space: pre-wrap; /* Wrap long lines */
+            word-wrap: break-word; /* Break long words */
+        }
+        
+        .output { /* Output display */
+            background: #000; /* Black background */
+            color: #0f0; /* Green text */
+            padding: 1rem; /* Padding */
+            border-radius: 5px; /* Rounded corners */
+            font-family: monospace; /* Monospace font */
+            margin: 1rem 0; /* Vertical margin */
+        }
+        
+        /* Tree Visualization */
+        .tree-diagram { /* Huffman tree visualization */
+            background: #f8f9fa; /* Light gray */
+            padding: 1.5rem; /* Padding */
+            border-radius: 5px; /* Rounded corners */
+            font-family: monospace; /* Monospace font */
+            white-space: pre; /* Preserve whitespace */
+            overflow-x: auto; /* Horizontal scroll if needed */
+            margin: 1.5rem 0; /* Vertical margin */
+            line-height: 1.8; /* Taller line height for tree */
+        }
+        
+        /* Table Styles */
+        table { /* Table styling */
+            width: 100%; /* Full width */
+            border-collapse: collapse; /* Remove double borders */
+            margin: 1rem 0; /* Vertical margin */
+        }
+        
+        th, td { /* Table header and cell */
+            padding: 0.75rem; /* Padding */
+            text-align: left; /* Left align */
+            border-bottom: 1px solid #ddd; /* Bottom border */
+        }
+        
+        th { /* Table header */
+            background: #f39c12; /* Orange background */
+            color: white; /* White text */
+        }
+        
+        tr:hover { /* Row hover */
+            background: #f5f5f5; /* Light gray */
+        }
+        
+        /* Steps List */
+        .steps-list { /* Steps list */
+            list-style-position: inside; /* Bullets inside */
+            margin-left: 1rem; /* Left margin */
+        }
+        
+        .steps-list li { /* List items */
+            margin: 0.5rem 0; /* Vertical margin */
+        }
+        
+        /* Feature Grid */
+        .feature-grid { /* Grid for features */
+            display: grid; /* CSS Grid */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+            gap: 1rem; /* Gap between items */
+            margin: 1.5rem 0; /* Vertical margin */
+        }
+        
+        .feature-item { /* Individual feature */
+            background: #f8f9fa; /* Light gray */
+            padding: 1rem; /* Padding */
+            border-radius: 5px; /* Rounded corners */
+            text-align: center; /* Centered text */
+        }
+        
+        .feature-item strong { /* Feature title */
+            color: #f39c12; /* Orange */
+            display: block; /* Block display */
+            margin-bottom: 0.5rem; /* Bottom margin */
+        }
+        
+        /* Footer Navigation */
+        .nav-links { /* Navigation links container */
+            display: flex; /* Flexbox */
+            justify-content: space-between; /* Space between */
+            margin-top: 2rem; /* Top margin */
+            padding-top: 1rem; /* Top padding */
+            border-top: 1px solid #ddd; /* Top border */
+            flex-wrap: wrap; /* Wrap on mobile */
+            gap: 1rem; /* Gap between wrapped items */
+        }
+        
+        .nav-links a { /* Navigation links */
+            padding: 0.5rem 1rem; /* Padding */
+            background: #333; /* Dark background */
+            color: white; /* White text */
+            text-decoration: none; /* No underline */
+            border-radius: 5px; /* Rounded corners */
+            transition: background 0.3s; /* Smooth hover */
+        }
+        
+        .nav-links a:hover { /* Link hover */
+            background: #555; /* Lighter gray */
+        }
+        
+        .nav-links .prev { /* Previous link */
+            background: #7f8c8d; /* Gray */
+        }
+        
+        .nav-links .next { /* Next link */
+            background: #f39c12; /* Orange */
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) { /* Mobile styles */
+            .container { padding: 1rem; } /* Less padding */
+            h1 { font-size: 2rem; } /* Smaller heading */
+            .complexity { flex-direction: column; gap: 1rem; } /* Stack complexity items */
+            .nav-bar { flex-direction: column; align-items: stretch; } /* Stack navigation */
+            .back-btn { text-align: center; } /* Center text */
+        }
+    </style> <!-- Close CSS -->
+</head> <!-- Close head -->
+<body> <!-- Open body -->
+    <div class="container"> <!-- Main container -->
+        
+        <!-- Navigation Bar -->
+        <div class="nav-bar"> <!-- Navigation bar -->
+            <a href="../index.html" class="back-btn">← Back to Portfolio</a> <!-- Back to home -->
+            <a href="https://github.com/yourusername/algorithm-portfolio/tree/main/greedy/huffman-coding.py" class="back-btn repo-btn" target="_blank">📁 View Code on GitHub</a> <!-- Repository link -->
+        </div> <!-- Close nav-bar -->
+        
+        <!-- Header Section -->
+        <div class="header"> <!-- Page header -->
+            <h1>🔤 Huffman Coding</h1> <!-- Title with emoji -->
+            <p class="subtitle">Greedy Algorithm #2 - Optimal Data Compression</p> <!-- Subtitle -->
+        </div> <!-- Close header -->
+        
+        <!-- Problem Description Section -->
+        <div class="section"> <!-- Section -->
+            <h2>📋 Problem Description</h2> <!-- Section title -->
+            
+            <div class="problem-statement"> <!-- Problem statement -->
+                <p>Given a set of characters and their frequencies, generate <strong>optimal prefix-free binary codes</strong> to minimize the total number of bits needed for encoding. Huffman coding is a lossless data compression algorithm used in formats like JPEG, MP3, and ZIP.</p> <!-- Problem description -->
+            </div> <!-- Close problem-statement -->
+            
+            <h3>Formal Definition:</h3> <!-- Subheading -->
+            <ul class="steps-list"> <!-- Unordered list -->
+                <li>Given: Characters c₁, c₂, ..., cₙ with frequencies f₁, f₂, ..., fₙ</li> <!-- List item -->
+                <li>Find: Binary codes for each character (prefix-free) that minimize Σ fᵢ × length(codeᵢ)</li> <!-- List item -->
+                <li>Constraint: No code is a prefix of another code (prefix-free property)</li> <!-- List item -->
+            </ul> <!-- Close list -->
+            
+            <div class="complexity"> <!-- Complexity container -->
+                <div class="complexity-item"> <!-- Time complexity -->
+                    <div class="complexity-value">O(n log n)</div> <!-- Value -->
+                    <div>Time Complexity</div> <!-- Label -->
+                </div> <!-- Close item -->
+                <div class="complexity-item"> <!-- Space complexity -->
+                    <div class="complexity-value">O(n)</div> <!-- Value -->
+                    <div>Space Complexity</div> <!-- Label -->
+                </div> <!-- Close item -->
+                <div class="complexity-item"> <!-- Compression -->
+                    <div class="complexity-value">Lossless</div> <!-- Value -->
+                    <div>Compression Type</div> <!-- Label -->
+                </div> <!-- Close item -->
+            </div> <!-- Close complexity -->
+            
+            <h3>Example: "hello world"</h3> <!-- Subheading -->
+            <table> <!-- Table for example -->
+                <tr> <!-- Header row -->
+                    <th>Character</th> <th>Frequency</th> <th>Huffman Code</th> <!-- Column headers -->
+                </tr> <!-- Close header row -->
+                <tr> <td>' '</td> <td>1</td> <td>100</td> </tr> <!-- Space character -->
+                <tr> <td>'d'</td> <td>1</td> <td>111</td> </tr> <!-- d character -->
+                <tr> <td>'e'</td> <td>1</td> <td>1101</td> </tr> <!-- e character -->
+                <tr> <td>'h'</td> <td>1</td> <td>1100</td> </tr> <!-- h character -->
+                <tr> <td>'l'</td> <td>3</td> <td>00</td> </tr> <!-- l character (most frequent) -->
+                <tr> <td>'o'</td> <td>2</td> <td>01</td> </tr> <!-- o character -->
+                <tr> <td>'r'</td> <td>1</td> <td>1011</td> </tr> <!-- r character -->
+                <tr> <td>'w'</td> <td>1</td> <td>1010</td> </tr> <!-- w character -->
+            </table> <!-- Close table -->
+            <p><strong>Original bits:</strong> 11 chars × 8 bits = 88 bits</p> <!-- Original size -->
+            <p><strong>Compressed bits:</strong> 35 bits</p> <!-- Compressed size -->
+            <p><strong>Compression ratio:</strong> 39.8%</p> <!-- Compression ratio -->
+        </div> <!-- Close section -->
+        
+        <!-- Python Implementation Section -->
+        <div class="section"> <!-- Section -->
+            <h2>🐍 Python Implementation</h2> <!-- Section title -->
+            
+            <div class="code-block"> <!-- Code block -->
+                <pre>import heapq  # Import heapq for priority queue implementation
+from collections import Counter  # Import Counter for counting frequencies
+
+class HuffmanNode:
+    """
+    Node class for Huffman tree
+    
+    Each node stores a character, its frequency, and references to left/right children.
+    The __lt__ method allows nodes to be compared by frequency in the heap.
+    """
+    
+    def __init__(self, char, freq):
+        """
+        Initialize a Huffman tree node
+        
+        Args:
+            char: Character stored in node (None for internal nodes)
+            freq: Frequency of character (or sum for internal nodes)
+        """
+        self.char = char  # Character (None for internal nodes)
+        self.freq = freq  # Frequency count
+        self.left = None  # Left child (initialized as None)
+        self.right = None  # Right child (initialized as None)
+    
+    def __lt__(self, other):
+        """
+        Less than comparison for heap queue
+        Allows nodes to be compared by frequency
+        """
+        return self.freq < other.freq  # Compare based on frequency
+
+def huffman_coding(text):
+    """
+    Compress text using Huffman coding
+    
+    Args:
+        text: Input string to compress
+    
+    Returns:
+        tuple: (encoded_text, codes_dict, tree_root)
+    """
+    # Step 1: Count frequency of each character
+    # Counter creates a dictionary with character frequencies
+    frequency = Counter(text)
+    
+    # Step 2: Create a priority queue (min-heap) of leaf nodes
+    heap = []  # Initialize empty heap
+    
+    # Create a node for each character and push to heap
+    for char, freq in frequency.items():
+        node = HuffmanNode(char, freq)  # Create leaf node
+        heapq.heappush(heap, node)  # Push to heap (ordered by freq)
+    
+    # Step 3: Build Huffman tree by merging nodes
+    # Continue until only one node remains (the root)
+    while len(heap) > 1:
+        # Pop two nodes with smallest frequencies
+        left = heapq.heappop(heap)  # Smallest frequency
+        right = heapq.heappop(heap)  # Second smallest
+        
+        # Create internal node with combined frequency
+        # Internal nodes have char = None
+        merged = HuffmanNode(None, left.freq + right.freq)
+        merged.left = left  # Set left child
+        merged.right = right  # Set right child
+        
+        # Push merged node back to heap
+        heapq.heappush(heap, merged)
+    
+    # Step 4: Generate Huffman codes by traversing the tree
+    codes = {}  # Dictionary to store character -> code mapping
+    
+    def generate_codes(node, code=""):
+        """
+        Recursively traverse Huffman tree to generate codes
+        
+        Args:
+            node: Current node in traversal
+            code: Current code string built so far
+        """
+        if node is None:  # Base case: empty node
+            return
+        
+        if node.char is not None:  # Leaf node found
+            codes[node.char] = code  # Store the code
+            return
+        
+        # Recursively traverse left (add '0') and right (add '1')
+        generate_codes(node.left, code + "0")
+        generate_codes(node.right, code + "1")
+    
+    # Get root of Huffman tree (last node in heap)
+    root = heap[0] if heap else None
+    
+    # Generate codes starting from root with empty code
+    if root:
+        generate_codes(root)
+    
+    # Step 5: Encode the original text
+    encoded = ""  # Initialize empty encoded string
+    for char in text:  # Loop through each character
+        encoded += codes[char]  # Append its code
+    
+    return encoded, codes, root  # Return results
+
+def decode(encoded, root):
+    """
+    Decode Huffman encoded text back to original
+    
+    Args:
+        encoded: Encoded binary string
+        root: Root of Huffman tree
+    
+    Returns:
+        str: Decoded original text
+    """
+    decoded = ""  # Initialize empty decoded string
+    current = root  # Start at root
+    
+    # Traverse the encoded string bit by bit
+    for bit in encoded:
+        if bit == "0":  # If bit is 0, go left
+            current = current.left
+        else:  # If bit is 1, go right
+            current = current.right
+        
+        # If we reached a leaf node
+        if current.char is not None:
+            decoded += current.char  # Add character to result
+            current = root  # Go back to root for next character
+    
+    return decoded  # Return decoded text
+
+# Example usage
+if __name__ == "__main__":
+    text = "hello world"  # Input text
+    
+    # Encode the text
+    encoded, codes, tree = huffman_coding(text)
+    
+    # Decode back to verify
+    decoded = decode(encoded, tree)
+    
+    # Print results
+    print(f"Original text: '{text}'")
+    print("\nHuffman Codes:")
+    for char, code in sorted(codes.items()):
+        print(f"  '{char}': {code}")
+    print(f"\nEncoded: {encoded}")
+    print(f"Decoded: '{decoded}'")
+    print(f"\nOriginal bits: {len(text) * 8}")
+    print(f"Compressed bits: {len(encoded)}")
+    print(f"Compression ratio: {len(encoded)/(8*len(text))*100:.1f}%")</pre>
+            </div> <!-- Close code-block -->
+            
+            <h3>Output</h3> <!-- Subheading -->
+            <div class="output"> <!-- Output display -->
+                Original text: 'hello world'<br><br>
+                Huffman Codes:<br>
+                  ' ': 100<br>
+                  'd': 111<br>
+                  'e': 1101<br>
+                  'h': 1100<br>
+                  'l': 00<br>
+                  'o': 01<br>
+                  'r': 1011<br>
+                  'w': 1010<br><br>
+                Encoded: 11001101000101101000100110101011111<br>
+                Decoded: 'hello world'<br><br>
+                Original bits: 88<br>
+                Compressed bits: 35<br>
+                Compression ratio: 39.8%
+            </div> <!-- Close output -->
+        </div> <!-- Close section -->
+        
+        <!-- Huffman Tree Visualization Section -->
+        <div class="section"> <!-- Section -->
+            <h2>🌳 Huffman Tree Visualization</h2> <!-- Section title -->
+            
+            <div class="tree-diagram"> <!-- Tree diagram -->
+                (11)  &lt;-- Root (total frequency)<br>
+                ├── (4)  &lt;-- Left subtree<br>
+                │   ├── (2)  &lt;-- Internal node<br>
+                │   │   ├── 'l'(3)  &lt;-- Leaf: 'l' appears 3 times<br>
+                │   │   └── 'o'(2)  &lt;-- Leaf: 'o' appears 2 times<br>
+                │   └── (2)  &lt;-- Internal node<br>
+                │       ├── 'h'(1)  &lt;-- Leaf: 'h' appears once<br>
+                │       └── 'e'(1)  &lt;-- Leaf: 'e' appears once<br>
+                └── (7)  &lt;-- Right subtree<br>
+                    ├── (3)  &lt;-- Internal node<br>
+                    │   ├── ' '(1)  &lt;-- Leaf: space appears once<br>
+                    │   └── (2)  &lt;-- Internal node<br>
+                    │       ├── 'w'(1)  &lt;-- Leaf: 'w' appears once<br>
+                    │       └── 'r'(1)  &lt;-- Leaf: 'r' appears once<br>
+                    └── (4)  &lt;-- Internal node<br>
+                        ├── (2)  &lt;-- Internal node<br>
+                        │   ├── 'd'(1)  &lt;-- Leaf: 'd' appears once<br>
+                        │   └── ...<br>
+            </div> <!-- Close tree-diagram -->
+            
+            <p><strong>Tree Construction Rules:</strong></p> <!-- Explanation -->
+            <ul class="steps-list"> <!-- List -->
+                <li>Start with leaf nodes for each character (frequency as weight)</li> <!-- Rule 1 -->
+                <li>Repeatedly merge two nodes with smallest frequencies</li> <!-- Rule 2 -->
+                <li>New internal node has frequency = sum of children's frequencies</li> <!-- Rule 3 -->
+                <li>Continue until only one node remains (the root)</li> <!-- Rule 4 -->
+                <li>Assign '0' to left branches, '1' to right branches</li> <!-- Rule 5 -->
+            </ul> <!-- Close list -->
+        </div> <!-- Close section -->
+        
+        <!-- Algorithm Steps Section -->
+        <div class="section"> <!-- Section -->
+            <h2> Algorithm Steps</h2> <!-- Section title -->
+            
+            <ol class="steps-list"> <!-- Ordered list -->
+                <li><strong>Count Frequencies:</strong> Count occurrence of each character in the input text</li> <!-- Step 1 -->
+                <li><strong>Create Priority Queue:</strong> Create a leaf node for each character and add to min-heap</li> <!-- Step 2 -->
+                <li><strong>Build Huffman Tree:</strong> Repeatedly remove two smallest nodes and merge them</li> <!-- Step 3 -->
+                <li><strong>Generate Codes:</strong> Traverse tree (left=0, right=1) to create binary codes</li> <!-- Step 4 -->
+                <li><strong>Encode:</strong> Replace each character with its binary code</li> <!-- Step 5 -->
+                <li><strong>Decode:</strong> Traverse tree using bits to recover original text</li> <!-- Step 6 -->
+            </ol> <!-- Close list -->
+            
+            <h3>Key Properties</h3> <!-- Subheading -->
+            <div class="feature-grid"> <!-- Feature grid -->
+                <div class="feature-item"> <!-- Feature -->
+                    <strong>Prefix-Free</strong> <!-- Title -->
+                    No code is a prefix of another code <!-- Description -->
+                </div> <!-- Close feature -->
+                <div class="feature-item"> <!-- Feature -->
+                    <strong>Optimal</strong> <!-- Title -->
+                    Minimizes weighted path length <!-- Description -->
+                </div> <!-- Close feature -->
+                <div class="feature-item"> <!-- Feature -->
+                    <strong>Lossless</strong> <!-- Title -->
+                    Perfect reconstruction possible <!-- Description -->
+                </div> <!-- Close feature -->
+                <div class="feature-item"> <!-- Feature -->
+                    <strong>Greedy Choice</strong> <!-- Title -->
+                    Always merge smallest frequencies <!-- Description -->
+                </div> <!-- Close feature -->
+            </div> <!-- Close feature-grid -->
+        </div> <!-- Close section -->
+        
+        <!-- Applications Section -->
+        <div class="section"> <!-- Section -->
+            <h2> Applications</h2> <!-- Section title -->
+            
+            <ul class="steps-list"> <!-- List -->
+                <li><strong>JPEG Image Compression:</strong> Huffman coding is used in JPEG's entropy encoding stage</li> <!-- Application 1 -->
+                <li><strong>MP3 Audio Compression:</strong> Used in MP3 for encoding quantized frequency coefficients</li> <!-- Application 2 -->
+                <li><strong>ZIP File Compression:</strong> Part of DEFLATE algorithm used in ZIP and gzip</li> <!-- Application 3 -->
+                <li><strong>Network Protocols:</strong> HTTP/2 uses HPACK compression based on Huffman coding</li> <!-- Application 4 -->
+                <li><strong>Fax Machines:</strong> Used in Group 3 and Group 4 fax compression standards</li> <!-- Application 5 -->
+            </ul> <!-- Close list -->
+        </div> <!-- Close section -->
+        
+        <!-- Footer Navigation -->
+        <div class="nav-links"> <!-- Navigation links -->
+            <a href="fractional-knapsack.html" class="prev">← Previous: Fractional Knapsack</a> <!-- Previous link -->
+            <a href="../divide-conquer/merge-sort.html" class="next">Next: Merge Sort →</a> <!-- Next link -->
+        </div> <!-- Close nav-links -->
+    </div> <!-- Close container -->
+</body> <!-- Close body -->
+</html> <!-- Close HTML document -->

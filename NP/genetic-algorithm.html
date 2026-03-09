@@ -1,0 +1,186 @@
+<!-- np/genetic-algorithm.html - NP Heuristic page with line-by-line comments -->
+<!DOCTYPE html> <!-- HTML5 declaration -->
+<html lang="en"> <!-- HTML document start -->
+<head> <!-- Head section -->
+    <meta charset="UTF-8"> <!-- Character encoding -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design -->
+    <title>Genetic Algorithm - NP Heuristic</title> <!-- Page title -->
+    <style> /* CSS styles start */
+        * { /* Universal reset */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        
+        body { /* Body styles */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font stack */
+            line-height: 1.6; /* Line height for readability */
+            color: #333; /* Text color */
+            background: #f5f5f5; /* Light gray background */
+        }
+        
+        .container { /* Main container */
+            max-width: 1000px; /* Maximum width */
+            margin: 0 auto; /* Center horizontally */
+            padding: 2rem; /* Internal padding */
+        }
+        
+        .header { /* Page header specific to algorithm pages */
+            background: linear-gradient(135deg, #e74c3c, #c0392b); /* Red gradient for NP */
+            color: white; /* White text */
+            padding: 2rem; /* Internal padding */
+            border-radius: 10px; /* Rounded corners */
+            margin-bottom: 2rem; /* Space below */
+        }
+        
+        h1 { /* Main heading */
+            font-size: 2.5rem; /* 40px font */
+            margin-bottom: 0.5rem; /* Space below */
+        }
+        
+        h2 { /* Subheading */
+            color: #e74c3c; /* Red color for NP */
+            margin: 1.5rem 0 1rem; /* Top, right/left, bottom margins */
+        }
+        
+        .section { /* Content sections */
+            background: white; /* White background */
+            padding: 2rem; /* Internal padding */
+            border-radius: 10px; /* Rounded corners */
+            margin-bottom: 2rem; /* Space below */
+        }
+        
+        .complexity { /* Complexity analysis container */
+            display: flex; /* Flexbox layout */
+            gap: 2rem; /* Space between items */
+            margin: 1rem 0; /* Vertical margin */
+            padding: 1rem; /* Internal padding */
+            background: #f8f9fa; /* Light gray background */
+            border-radius: 5px; /* Rounded corners */
+        }
+        
+        .genetic-steps { /* Container for genetic algorithm steps */
+            display: grid; /* Grid layout */
+            grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+            gap: 1rem; /* Space between grid items */
+            margin: 2rem 0; /* Vertical margin */
+        }
+        
+        .step { /* Individual step box */
+            text-align: center; /* Center text */
+            padding: 1rem; /* Internal padding */
+            background: #e74c3c; /* Red background */
+            color: white; /* White text */
+            border-radius: 5px; /* Rounded corners */
+        }
+        
+        .demo-container { /* Interactive demo area */
+            background: #2c3e50; /* Dark blue-gray */
+            padding: 1.5rem; /* Internal padding */
+            border-radius: 5px; /* Rounded corners */
+            color: white; /* White text */
+        }
+        
+        button { /* Button styling */
+            background: #e74c3c; /* Red background */
+            color: white; /* White text */
+            border: none; /* No border */
+            padding: 0.5rem 1rem; /* Padding */
+            border-radius: 3px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin: 0.5rem 0; /* Vertical margin */
+        }
+        
+        button:hover { /* Button hover state */
+            background: #c0392b; /* Darker red */
+        }
+        
+        .route-display { /* Display for TSP route */
+            background: #34495e; /* Slightly lighter blue-gray */
+            padding: 1rem; /* Internal padding */
+            border-radius: 5px; /* Rounded corners */
+            margin: 1rem 0; /* Vertical margin */
+            font-family: monospace; /* Monospace font */
+        }
+        
+        .fitness-graph { /* ASCII graph container */
+            background: #ecf0f1; /* Light gray */
+            padding: 1rem; /* Internal padding */
+            border-radius: 5px; /* Rounded corners */
+            color: #333; /* Dark text */
+            margin: 1rem 0; /* Vertical margin */
+        }
+        
+        .back-link { /* Link back to main page */
+            color: #666; /* Gray color */
+            text-decoration: none; /* No underline */
+            display: inline-block; /* Allows padding */
+            margin-bottom: 1rem; /* Space below */
+        }
+        
+        .nav-links { /* Navigation links container */
+            display: flex; /* Flexbox */
+            justify-content: space-between; /* Space between prev/next */
+            margin-top: 2rem; /* Space above */
+        }
+        
+        .nav-links a { /* Navigation link styling */
+            padding: 0.5rem 1rem; /* Padding */
+            background: #333; /* Dark background */
+            color: white; /* White text */
+            text-decoration: none; /* No underline */
+            border-radius: 5px; /* Rounded corners */
+        }
+    </style> <!-- Close CSS -->
+</head> <!-- Close head -->
+<body> <!-- Open body -->
+    <div class="container"> <!-- Main container -->
+        <a href="../index.html" class="back-link">← Back to Portfolio</a> <!-- Navigation back to main -->
+        
+        <div class="header"> <!-- Page header -->
+            <h1>🧬 Genetic Algorithm (TSP)</h1> <!-- Title with DNA emoji -->
+            <p>NP Heuristic - Approximating the Traveling Salesman Problem</p> <!-- Subtitle -->
+        </div> <!-- Close header -->
+        
+        <div class="section"> <!-- First section - Problem Description -->
+            <h2>Problem Description</h2> <!-- Section title -->
+            <p>The Traveling Salesman Problem (TSP): Find the shortest possible route that visits each city exactly once and returns to the starting city. This is NP-hard, so we use a genetic algorithm heuristic.</p> <!-- Description -->
+            
+            <div class="complexity"> <!-- Complexity container -->
+                <div class="complexity-item"> <!-- Time complexity item -->
+                    <div class="complexity-value">O(g·n²)</div> <!-- Big O: generations * cities squared -->
+                    <div>Time Complexity*</div> <!-- Label with asterisk -->
+                </div> <!-- Close time item -->
+                <div class="complexity-item"> <!-- Space complexity item -->
+                    <div class="complexity-value">O(p·n)</div> <!-- Space: population * cities -->
+                    <div>Space Complexity</div> <!-- Label -->
+                </div> <!-- Close space item -->
+                <div class="complexity-item"> <!-- Optimality item -->
+                    <div class="complexity-value">~95%</div> <!-- Average optimality percentage -->
+                    <div>Avg. Optimality</div> <!-- Label -->
+                </div> <!-- Close optimality item -->
+            </div> <!-- Close complexity -->
+            
+            <p>*where g = generations, p = population size, n = number of cities</p> <!-- Explanation of variables -->
+        </div> <!-- Close first section -->
+        
+        <div class="section"> <!-- Second section - Evolutionary Process -->
+            <h2>Evolutionary Process</h2> <!-- Section title -->
+            <div class="genetic-steps"> <!-- Steps container -->
+                <div class="step">1️⃣ Initialization</div> <!-- Step 1 -->
+                <div class="step">2️⃣ Selection</div> <!-- Step 2 -->
+                <div class="step">3️⃣ Crossover</div> <!-- Step 3 -->
+                <div class="step">4️⃣ Mutation</div> <!-- Step 4 -->
+                <div class="step">5️⃣ Evolution</div> <!-- Step 5 -->
+            </div> <!-- Close steps -->
+            
+            <p><strong>Algorithm Steps:</strong></p> <!-- Subheading -->
+            <ol> <!-- Ordered list -->
+                <li>Generate random population of routes</li> <!-- Step 1 -->
+                <li>Evaluate fitness (route distance)</li> <!-- Step 2 -->
+                <li>Select parents using tournament selection</li> <!-- Step 3 -->
+                <li>Apply ordered crossover (OX) to create offspring</li> <!-- Step 4 -->
+                <li>Mutate with swap mutation</li> <!-- Step 5 -->
+                <li>Replace population with new generation</li> <!-- Step 6 -->
+                <li>Repeat until convergence or max generations</li> <!-- Step 7 -->
+            </ol> <!-- Close
