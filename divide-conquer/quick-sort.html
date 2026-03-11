@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Sort - Divide & Conquer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #2980b9;
+        }
+        
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+        
+        .problem-statement {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 1.5rem;
+        }
+        
+        .complexity {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .complexity-item {
+            text-align: center;
+        }
+        
+        .complexity-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .repo-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .repo-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #24292e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+        
+        .repo-link:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+            margin: 1rem 0;
+        }
+        
+        .math {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .steps-list {
+            list-style-position: inside;
+            margin-left: 1rem;
+        }
+        
+        .steps-list li {
+            margin: 0.5rem 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        .nav-links .prev {
+            background: #7f8c8d;
+        }
+        
+        .nav-links .next {
+            background: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .complexity { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Navigation Bar -->
+        <div class="nav-bar">
+            <a href="../index.html" class="back-btn">← Back to Portfolio</a>
+        </div>
+        
+        <!-- Header Section -->
+        <div class="header">
+            <h1> Quick Sort</h1>
+            <p class="subtitle">Divide & Conquer Algorithm #2 - In-Place Sorting with Pivot</p>
+        </div>
+        
+        <!-- Problem Description Section -->
+        <div class="section">
+            <h2> Problem Description</h2>
+            
+            <div class="problem-statement">
+                <p>Sort an array using the <strong>divide and conquer</strong> approach: pick a <strong>pivot</strong> element, partition the array around the pivot (smaller elements on left, larger on right), and recursively sort the subarrays. Quick sort is an in-place sorting algorithm with excellent average-case performance.</p>
+            </div>
+            
+            <h3>How It Works:</h3>
+            <ul class="steps-list">
+                <li><strong>Choose Pivot:</strong> Select a pivot element (random selection helps avoid worst-case)</li>
+                <li><strong>Partition:</strong> Rearrange array so elements smaller than pivot go left, larger go right</li>
+                <li><strong>Recursively Sort:</strong> Apply quick sort to left and right subarrays</li>
+            </ul>
+            
+            <div class="complexity">
+                <div class="complexity-item">
+                    <div class="complexity-value">O(n log n) avg</div>
+                    <div>Time Complexity (Average)</div>
+                </div>
+                <div class="complexity-item">
+                    <div class="complexity-value">O(n²)</div>
+                    <div>Time Complexity (Worst)</div>
+                </div>
+                <div class="complexity-item">
+                    <div class="complexity-value">O(log n)</div>
+                    <div>Space Complexity</div>
+                </div>
+            </div>
+            
+            <div class="warning">
+                <strong> Note:</strong> Quick sort has O(n²) worst case (when pivot is always smallest or largest), but with random pivot selection, it's O(n log n) in practice and is often faster than merge sort due to better cache locality.
+            </div>
+            
+            <h3>Example:</h3>
+            <div class="math">
+                Input: [64, 34, 25, 12, 22, 11, 90]
+            </div>
+            <div class="math">
+                Output: [11, 12, 22, 25, 34, 64, 90]
+            </div>
+            
+            <!-- REPO LINK CARD -->
+            <div class="repo-card">
+                <h2> View Complete Implementation on GitHub</h2>
+                <p>The full implementation with detailed code, partition visualization, and documentation is available in the repository below:</p>
+                
+                <a href="https://github.com/StevenN123/quick-sorts.git" class="repo-link" target="_blank">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;"></span> StevenN123/quick-sorts.git
+                </a>
+                
+                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
+                     Click the link above to see the complete code, partition visualization, and documentation
+                </p>
+            </div>
+        </div>
+        
+        <!-- Footer Navigation -->
+        <div class="nav-links">
+            <a href="merge-sort.html" class="prev">← Previous: Merge Sort</a>
+            <a href="../greedy/fractional-knapsack.html" class="next">Next: Fractional Knapsack →</a>
+        </div>
+    </div>
+</body>
+</html>

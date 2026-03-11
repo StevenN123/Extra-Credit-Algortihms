@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci - Dynamic Programming</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #9b59b6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #8e44ad;
+        }
+        
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #9b59b6;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #9b59b6;
+            padding-bottom: 0.5rem;
+        }
+        
+        .problem-statement {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #9b59b6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .complexity {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .complexity-item {
+            text-align: center;
+        }
+        
+        .complexity-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #9b59b6;
+        }
+        
+        .repo-card {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .repo-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #24292e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+        
+        .repo-link:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .math {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        
+        .sequence {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .sequence-item {
+            background: #9b59b6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        .nav-links .prev {
+            background: #7f8c8d;
+        }
+        
+        .nav-links .next {
+            background: #9b59b6;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .complexity { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Navigation Bar -->
+        <div class="nav-bar">
+            <a href="../index.html" class="back-btn">← Back to Portfolio</a>
+        </div>
+        
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Fibonacci Numbers</h1>
+            <p class="subtitle">Dynamic Programming #1 - Multiple DP Approaches</p>
+        </div>
+        
+        <!-- Problem Description Section -->
+        <div class="section">
+            <h2> Problem Description</h2>
+            
+            <div class="problem-statement">
+                <p>The <strong>Fibonacci sequence</strong> is defined as: F(0) = 0, F(1) = 1, and F(n) = F(n-1) + F(n-2) for n > 1. Calculate the nth Fibonacci number efficiently using dynamic programming.</p>
+            </div>
+            
+            <div class="math">
+                F(n) = F(n-1) + F(n-2), with F(0) = 0, F(1) = 1
+            </div>
+            
+            <div class="complexity">
+                <div class="complexity-item">
+                    <div class="complexity-value">O(2ⁿ)</div>
+                    <div>Naive Recursive</div>
+                </div>
+                <div class="complexity-item">
+                    <div class="complexity-value">O(n)</div>
+                    <div>DP Approaches</div>
+                </div>
+                <div class="complexity-item">
+                    <div class="complexity-value">O(1)</div>
+                    <div>Space Optimized</div>
+                </div>
+            </div>
+            
+            <h3>Example:</h3>
+            <div class="math">
+                Input: n = 10
+            </div>
+            <div class="math">
+                Output: 55
+            </div>
+            
+            <h3>Fibonacci Sequence up to n=10:</h3>
+            <div class="sequence">
+                <span class="sequence-item">F(0)=0</span>
+                <span class="sequence-item">F(1)=1</span>
+                <span class="sequence-item">F(2)=1</span>
+                <span class="sequence-item">F(3)=2</span>
+                <span class="sequence-item">F(4)=3</span>
+                <span class="sequence-item">F(5)=5</span>
+                <span class="sequence-item">F(6)=8</span>
+                <span class="sequence-item">F(7)=13</span>
+                <span class="sequence-item">F(8)=21</span>
+                <span class="sequence-item">F(9)=34</span>
+                <span class="sequence-item">F(10)=55</span>
+            </div>
+            
+            <!-- REPO LINK CARD -->
+            <div class="repo-card">
+                <h2> View Complete Implementation on GitHub</h2>
+                <p>The full implementation with detailed code, recursion tree visualizations, and documentation is available in the repository below:</p>
+                
+                <a href="https://github.com/StevenN123/Fibonacci.git" class="repo-link" target="_blank">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;"></span> StevenN123/Fibonacci.git
+                </a>
+                
+                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
+                 Click the link above to see the complete code, recursion tree visualizations, and documentation
+                </p>
+            </div>
+        </div>
+        
+        <!-- Footer Navigation -->
+        <div class="nav-links">
+            <a href="../index.html" class="prev">← Back to Portfolio</a>
+            <a href="knapsack01.html" class="next">Next: 0/1 Knapsack →</a>
+        </div>
+    </div>
+</body>
+</html>
