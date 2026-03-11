@@ -1,356 +1,281 @@
-<!DOCTYPE html> <!-- Declares HTML5 document type -->
-<html lang="en"> <!-- Opens HTML document with English language -->
-<head> <!-- Head section contains metadata -->
-    <meta charset="UTF-8"> <!-- Character encoding UTF-8 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design viewport -->
-    <title>Fractional Knapsack - Greedy Algorithm</title> <!-- Browser tab title -->
-    <style> /* CSS styles start */
-        * { /* Universal reset */
-            margin: 0; /* Remove default margins */
-            padding: 0; /* Remove default padding */
-            box-sizing: border-box; /* Include padding in width calculation */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractional Knapsack - Greedy Algorithm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        body { /* Body styling */
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Font stack */
-            line-height: 1.6; /* Line height for readability */
-            color: #333; /* Text color */
-            background: #f5f5f5; /* Light gray background */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
         }
         
-        .container { /* Main container */
-            max-width: 1000px; /* Maximum width */
-            margin: 0 auto; /* Center horizontally */
-            padding: 2rem; /* Internal padding */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
         }
         
-        /* Header Section */
-        .header { /* Page header */
-            background: linear-gradient(135deg, #f39c12, #e67e22); /* Orange gradient */
-            color: white; /* White text */
-            padding: 2rem; /* Padding */
-            border-radius: 10px; /* Rounded corners */
-            margin-bottom: 2rem; /* Bottom margin */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Shadow */
+        .header {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
-        h1 { /* Main heading */
-            font-size: 2.5rem; /* 40px font */
-            margin-bottom: 0.5rem; /* Bottom margin */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
         }
         
-        .subtitle { /* Subtitle style */
-            font-size: 1.1rem; /* 17.6px font */
-            opacity: 0.9; /* Slight transparency */
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
         
-        /* Navigation */
-        .nav-bar { /* Navigation bar */
-            display: flex; /* Flexbox layout */
-            justify-content: space-between; /* Space between items */
-            align-items: center; /* Center vertically */
-            margin-bottom: 2rem; /* Bottom margin */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         
-        .back-btn { /* Back button style */
-            display: inline-block; /* Inline with padding */
-            padding: 0.5rem 1rem; /* Padding */
-            background: #f39c12; /* Orange background */
-            color: white; /* White text */
-            text-decoration: none; /* No underline */
-            border-radius: 5px; /* Rounded corners */
-            transition: background 0.3s; /* Smooth hover */
+        .back-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #f39c12;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
         }
         
-        .back-btn:hover { /* Back button hover */
-            background: #e67e22; /* Darker orange */
+        .back-btn:hover {
+            background: #e67e22;
         }
         
-        .repo-btn { /* Repository button */
-            background: #24292e; /* GitHub dark color */
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
-        /* Content Sections */
-        .section { /* Content section */
-            background: white; /* White background */
-            padding: 2rem; /* Padding */
-            border-radius: 10px; /* Rounded corners */
-            margin-bottom: 2rem; /* Bottom margin */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Light shadow */
+        h2 {
+            color: #f39c12;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f39c12;
+            padding-bottom: 0.5rem;
         }
         
-        h2 { /* Section heading */
-            color: #f39c12; /* Orange color */
-            margin-bottom: 1.5rem; /* Bottom margin */
-            border-bottom: 2px solid #f39c12; /* Orange bottom border */
-            padding-bottom: 0.5rem; /* Padding below */
+        .problem-statement {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #f39c12;
+            margin-bottom: 1.5rem;
         }
         
-        h3 { /* Subsection heading */
-            margin: 1.5rem 0 1rem; /* Top, sides, bottom margins */
-            color: #555; /* Gray color */
+        .complexity {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            flex-wrap: wrap;
         }
         
-        /* Problem Description */
-        .problem-statement { /* Problem statement box */
-            background: #f8f9fa; /* Light gray */
-            padding: 1.5rem; /* Padding */
-            border-radius: 8px; /* Rounded corners */
-            border-left: 4px solid #f39c12; /* Orange left border */
-            margin-bottom: 1.5rem; /* Bottom margin */
+        .complexity-item {
+            text-align: center;
         }
         
-        .complexity { /* Complexity container */
-            display: flex; /* Flexbox */
-            gap: 2rem; /* Gap between items */
-            margin: 1rem 0; /* Vertical margin */
-            padding: 1rem; /* Padding */
-            background: #f8f9fa; /* Light gray */
-            border-radius: 5px; /* Rounded corners */
+        .complexity-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f39c12;
         }
         
-        .complexity-item { /* Individual complexity item */
-            text-align: center; /* Centered text */
+        .repo-card {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
-        .complexity-value { /* Complexity value */
-            font-size: 1.5rem; /* 24px font */
-            font-weight: bold; /* Bold */
-            color: #f39c12; /* Orange */
+        .repo-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #24292e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            transition: all 0.3s;
         }
         
-        /* Code Section */
-        .code-block { /* Code container */
-            background: #2c3e50; /* Dark blue-gray */
-            color: #ecf0f1; /* Light text */
-            padding: 1.5rem; /* Padding */
-            border-radius: 5px; /* Rounded corners */
-            overflow-x: auto; /* Horizontal scroll if needed */
-            font-family: 'Courier New', monospace; /* Monospace font */
-            margin: 1.5rem 0; /* Vertical margin */
-            line-height: 1.4; /* Line height */
+        .repo-link:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
-        .code-block pre { /* Preformatted text inside code block */
-            margin: 0; /* Remove default margin */
-            white-space: pre-wrap; /* Wrap long lines */
-            word-wrap: break-word; /* Break long words */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
         }
         
-        .output { /* Output display */
-            background: #000; /* Black background */
-            color: #0f0; /* Green text */
-            padding: 1rem; /* Padding */
-            border-radius: 5px; /* Rounded corners */
-            font-family: monospace; /* Monospace font */
-            margin: 1rem 0; /* Vertical margin */
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
         
-        /* Table Styles */
-        table { /* Table styling */
-            width: 100%; /* Full width */
-            border-collapse: collapse; /* Remove double borders */
-            margin: 1rem 0; /* Vertical margin */
+        th {
+            background: #f39c12;
+            color: white;
         }
         
-        th, td { /* Table header and cell */
-            padding: 0.75rem; /* Padding */
-            text-align: left; /* Left align */
-            border-bottom: 1px solid #ddd; /* Bottom border */
+        .steps-list {
+            list-style-position: inside;
+            margin-left: 1rem;
         }
         
-        th { /* Table header */
-            background: #f39c12; /* Orange background */
-            color: white; /* White text */
+        .steps-list li {
+            margin: 0.5rem 0;
         }
         
-        tr:hover { /* Row hover */
-            background: #f5f5f5; /* Light gray */
+        .math {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
         }
         
-        /* Example Box */
-        .example-box { /* Example container */
-            background: #f8f9fa; /* Light gray */
-            padding: 1rem; /* Padding */
-            border-radius: 5px; /* Rounded corners */
-            margin: 1rem 0; /* Vertical margin */
-            font-family: monospace; /* Monospace font */
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
         }
         
-        /* Steps List */
-        .steps-list { /* Steps list */
-            list-style-position: inside; /* Bullets inside */
-            margin-left: 1rem; /* Left margin */
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
         }
         
-        .steps-list li { /* List items */
-            margin: 0.5rem 0; /* Vertical margin */
+        .nav-links .next {
+            background: #f39c12;
         }
         
-        /* Math Display */
-        .math { /* Mathematical expression */
-            background: #f8f9fa; /* Light gray */
-            padding: 0.5rem 1rem; /* Padding */
-            border-radius: 5px; /* Rounded corners */
-            font-family: monospace; /* Monospace font */
-            font-size: 1.1rem; /* Slightly larger */
-            margin: 0.5rem 0; /* Vertical margin */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .complexity { flex-direction: column; }
         }
-        
-        /* Footer Navigation */
-        .nav-links { /* Navigation links container */
-            display: flex; /* Flexbox */
-            justify-content: space-between; /* Space between */
-            margin-top: 2rem; /* Top margin */
-            padding-top: 1rem; /* Top padding */
-            border-top: 1px solid #ddd; /* Top border */
-        }
-        
-        .nav-links a { /* Navigation links */
-            padding: 0.5rem 1rem; /* Padding */
-            background: #333; /* Dark background */
-            color: white; /* White text */
-            text-decoration: none; /* No underline */
-            border-radius: 5px; /* Rounded corners */
-            transition: background 0.3s; /* Smooth hover */
-        }
-        
-        .nav-links a:hover { /* Link hover */
-            background: #555; /* Lighter gray */
-        }
-        
-        .nav-links .next { /* Next link */
-            background: #f39c12; /* Orange */
-        }
-        
-        .nav-links .next:hover { /* Next hover */
-            background: #e67e22; /* Darker orange */
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) { /* Mobile styles */
-            .container { padding: 1rem; } /* Less padding */
-            h1 { font-size: 2rem; } /* Smaller heading */
-            .complexity { flex-direction: column; gap: 1rem; } /* Stack complexity items */
-        }
-    </style> <!-- Close CSS -->
-</head> <!-- Close head -->
-<body> <!-- Open body -->
-    <div class="container"> <!-- Main container -->
+    </style>
+</head>
+<body>
+    <div class="container">
         
         <!-- Navigation Bar -->
-        <div class="nav-bar"> <!-- Navigation bar -->
-            <a href="../index.html" class="back-btn">← Back to Portfolio</a> <!-- Back to home -->
-            <a href="https://github.com/yourusername/algorithm-portfolio/tree/main/greedy/fractional-knapsack.py" class="back-btn repo-btn" target="_blank">📁 View Code on GitHub</a> <!-- Repository link -->
-        </div> <!-- Close nav-bar -->
+        <div class="nav-bar">
+            <a href="../index.html" class="back-btn">← Back to Portfolio</a>
+        </div>
         
         <!-- Header Section -->
-        <div class="header"> <!-- Page header -->
-            <h1>💰 Fractional Knapsack</h1> <!-- Title with emoji -->
-            <p class="subtitle">Greedy Algorithm #1 - Maximizing Value with Fractions</p> <!-- Subtitle -->
-        </div> <!-- Close header -->
+        <div class="header">
+            <h1>💰 Fractional Knapsack</h1>
+            <p class="subtitle">Greedy Algorithm #1 - Maximizing Value with Fractions</p>
+        </div>
         
         <!-- Problem Description Section -->
-        <div class="section"> <!-- Section -->
-            <h2>📋 Problem Description</h2> <!-- Section title -->
+        <div class="section">
+            <h2>📋 Problem Description</h2>
             
-            <div class="problem-statement"> <!-- Problem statement -->
-                <p>Given <strong>n items</strong> each with a <strong>weight</strong> and a <strong>value</strong>, and a knapsack with <strong>capacity W</strong>, find the maximum total value that can be placed in the knapsack. Unlike the 0/1 knapsack problem, you can take <strong>fractions</strong> of items.</p> <!-- Problem description -->
-            </div> <!-- Close problem-statement -->
+            <div class="problem-statement">
+                <p>Given <strong>n items</strong> each with a <strong>weight</strong> and a <strong>value</strong>, and a knapsack with <strong>capacity W</strong>, find the maximum total value that can be placed in the knapsack. Unlike the 0/1 knapsack problem, you can take <strong>fractions</strong> of items.</p>
+            </div>
             
-            <h3>Formal Definition:</h3> <!-- Subheading -->
-            <ul class="steps-list"> <!-- Unordered list -->
-                <li>Given: Items i = 1...n with weight wᵢ and value vᵢ</li> <!-- List item -->
-                <li>Given: Knapsack capacity W</li> <!-- List item -->
-                <li>Find: Maximum total value such that total weight ≤ W</li> <!-- List item -->
-                <li>Constraint: Can take any fraction xᵢ of item i where 0 ≤ xᵢ ≤ 1</li> <!-- List item -->
-            </ul> <!-- Close list -->
+            <h3>Formal Definition:</h3>
+            <ul class="steps-list">
+                <li>Given: Items i = 1...n with weight wᵢ and value vᵢ</li>
+                <li>Given: Knapsack capacity W</li>
+                <li>Find: Maximum total value such that total weight ≤ W</li>
+                <li>Constraint: Can take any fraction xᵢ of item i where 0 ≤ xᵢ ≤ 1</li>
+            </ul>
             
-            <div class="math"> <!-- Math display -->
-                Maximize: Σ vᵢ·xᵢ subject to Σ wᵢ·xᵢ ≤ W, 0 ≤ xᵢ ≤ 1 <!-- Mathematical formulation -->
-            </div> <!-- Close math -->
+            <div class="math">
+                Maximize: Σ vᵢ·xᵢ subject to Σ wᵢ·xᵢ ≤ W, 0 ≤ xᵢ ≤ 1
+            </div>
             
-            <div class="complexity"> <!-- Complexity container -->
-                <div class="complexity-item"> <!-- Time complexity -->
-                    <div class="complexity-value">O(n log n)</div> <!-- Value -->
-                    <div>Time Complexity</div> <!-- Label -->
-                </div> <!-- Close item -->
-                <div class="complexity-item"> <!-- Space complexity -->
-                    <div class="complexity-value">O(1)</div> <!-- Value -->
-                    <div>Space Complexity</div> <!-- Label -->
-                </div> <!-- Close item -->
-                <div class="complexity-item"> <!-- Greedy property -->
-                    <div class="complexity-value">Optimal</div> <!-- Value -->
-                    <div>Greedy Choice</div> <!-- Label -->
-                </div> <!-- Close item -->
-            </div> <!-- Close complexity -->
+            <div class="complexity">
+                <div class="complexity-item">
+                    <div class="complexity-value">O(n log n)</div>
+                    <div>Time Complexity</div>
+                </div>
+                <div class="complexity-item">
+                    <div class="complexity-value">O(1)</div>
+                    <div>Space Complexity</div>
+                </div>
+            </div>
             
-            <h3>Example:</h3> <!-- Subheading -->
-            <table> <!-- Table for example -->
-                <tr> <!-- Header row -->
-                    <th>Item</th> <th>Weight</th> <th>Value</th> <th>Ratio (v/w)</th> <!-- Column headers -->
-                </tr> <!-- Close header row -->
-                <tr> <td>1</td> <td>10</td> <td>60</td> <td>6.0</td> </tr> <!-- Item 1 data -->
-                <tr> <td>2</td> <td>20</td> <td>100</td> <td>5.0</td> </tr> <!-- Item 2 data -->
-                <tr> <td>3</td> <td>30</td> <td>120</td> <td>4.0</td> </tr> <!-- Item 3 data -->
-            </table> <!-- Close table -->
-            <p><strong>Capacity:</strong> 50</p> <!-- Capacity info -->
-            <p><strong>Optimal solution:</strong> Take items 1 and 2 completely, and 2/3 of item 3 = 60 + 100 + 80 = 240</p> <!-- Solution -->
-        </div> <!-- Close section -->
+            <h3>Example:</h3>
+            <table>
+                <tr>
+                    <th>Item</th> <th>Weight</th> <th>Value</th> <th>Ratio (v/w)</th>
+                </tr>
+                <tr> <td>1</td> <td>10</td> <td>60</td> <td>6.0</td> </tr>
+                <tr> <td>2</td> <td>20</td> <td>100</td> <td>5.0</td> </tr>
+                <tr> <td>3</td> <td>30</td> <td>120</td> <td>4.0</td> </tr>
+            </table>
+            <p><strong>Capacity:</strong> 50</p>
+            <p><strong>Optimal solution:</strong> Take items 1 and 2 completely, and 2/3 of item 3 = 60 + 100 + 80 = 240</p>
+            
+            <!-- REPO LINK CARD -->
+            <div class="repo-card">
+                <h2>📂 View Complete Implementation on GitHub</h2>
+                <p>The full implementation with detailed code, screenshots, and documentation is available in the repository below:</p>
+                
+                <a href="https://github.com/StevenN123/fractional-knapsacks.html.git" class="repo-link" target="_blank">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">📁</span> StevenN123/fractional-knapsacks.html.git
+                </a>
+                
+                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
+                    ⬆️ Click the link above to see the complete code, screenshots, and documentation
+                </p>
+            </div>
+        </div>
         
-        <!-- Python Implementation Section -->
-        <div class="section"> <!-- Section -->
-            <h2>🐍 Python Implementation</h2> <!-- Section title -->
-            
-            <div class="code-block"> <!-- Code block -->
-                <pre>def fractional_knapsack(items, capacity):
-    """
-    Solve fractional knapsack problem using greedy approach
-    
-    Args:
-        items: List of tuples (weight, value)
-        capacity: Maximum weight capacity
-    
-    Returns:
-        tuple: (maximum_value, items_taken_details)
-    """
-    # Step 1: Calculate value/weight ratio for each item
-    # Create a new list with (weight, value, ratio) for sorting
-    items_with_ratio = []
-    for weight, value in items:  # Loop through each item
-        ratio = value / weight    # Calculate value per unit weight
-        items_with_ratio.append((weight, value, ratio))  # Add to list
-    
-    # Step 2: Sort items by ratio in descending order (highest ratio first)
-    # key=lambda x: x[2] means sort by the third element (ratio)
-    # reverse=True means descending order
-    items_with_ratio.sort(key=lambda x: x[2], reverse=True)
-    
-    total_value = 0  # Initialize total value accumulator
-    remaining = capacity  # Track remaining capacity
-    items_taken = []  # List to store what we took
-    
-    # Step 3: Take items greedily based on ratio
-    for weight, value, ratio in items_with_ratio:
-        if remaining >= weight:
-            # Case 1: Item fits completely - take all of it
-            total_value += value  # Add full value
-            remaining -= weight  # Reduce remaining capacity
-            items_taken.append(f"Took whole item (weight:{weight}, value:{value})")
-        else:
-            # Case 2: Item doesn't fit completely - take fraction
-            fraction = remaining / weight  # Calculate fraction that fits
-            total_value += value * fraction  # Add fractional value
-            items_taken.append(f"Took {fraction:.2f} of item (value:{value * fraction:.2f})")
-            break  # Knapsack is full, exit loop
-    
-    return total_value, items_taken  # Return results
-
-# Example usage
-if __name__ == "__main__":
-    # Define items as (weight, value) pairs
-    items = [(10, 60), (20, 100), (30, 120)]
-    capacity = 50
-    
-    # Solve the problem
-    max_value, taken =
+        <!-- Footer Navigation -->
+        <div class="nav-links">
+            <a href="../index.html" class="prev">← Back to Portfolio</a>
+            <a href="huffman-coding.html" class="next">Next: Huffman Coding →</a>
+        </div>
+    </div>
+</body>
+</html>
