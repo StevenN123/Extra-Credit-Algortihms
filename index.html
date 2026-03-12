@@ -44,22 +44,6 @@
             margin-bottom: 2rem; /* 32px space below */
         }
         
-        .repo-link-header { /* Repository link in header */
-            display: inline-block; /* Allows padding while staying inline */
-            padding: 0.8rem 2rem; /* 12.8px vertical, 32px horizontal padding */
-            background: white; /* White background */
-            color: #667eea; /* Purple text color matching gradient */
-            text-decoration: none; /* Removes underline from link */
-            border-radius: 50px; /* Fully rounded corners (pill shape) */
-            font-weight: bold; /* Bold text */
-            transition: transform 0.3s ease; /* Smooth transform animation on hover */
-        }
-        
-        .repo-link-header:hover { /* Hover state for header link */
-            transform: translateY(-3px); /* Moves link up by 3px on hover */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); /* Adds shadow for depth effect */
-        }
-        
         /* Category Sections */
         .category { /* Each algorithm category container */
             background: white; /* White background for contrast */
@@ -153,14 +137,6 @@
             background: #555; /* Lighter gray on hover */
         }
         
-        .btn-github { /* GitHub button specific style */
-            background: #24292e; /* GitHub's dark color */
-        }
-        
-        .btn-github:hover { /* GitHub button hover */
-            background: #2c3e50; /* Darker blue-gray */
-        }
-        
         /* Footer Section */
         footer { /* Page footer style */
             text-align: center; /* Centered text */
@@ -207,7 +183,6 @@
         <div class="intro"> <!-- Intro container -->
             <h1>🎯 Algorithm Portfolio</h1> <!-- Main title with emoji -->
             <p class="subtitle">7 Algorithms | 4 Paradigms | Complete Analysis</p> <!-- Subtitle with stats -->
-            <a href="https://github.com/StevenN123/Extra-Credit-Algortihms.git" class="repo-link-header" target="_blank">📚 View Main GitHub Repository</a> <!-- Repository link opens in new tab -->
         </div> <!-- Closes intro -->
         
         <!-- Greedy Algorithms Section -->
@@ -221,7 +196,6 @@
                     <p>Maximize value in a knapsack by taking fractions of items based on value/weight ratio. Items can be broken to fill capacity exactly.</p> <!-- Description -->
                     <div class="complexity-badge">⏱️ Time: O(n log n) | 💾 Space: O(1)</div> <!-- Complexity info -->
                     <a href="greedy/fractional-knapsack.html" class="btn">View Problem →</a> <!-- Link to problem page -->
-                    <a href="https://github.com/StevenN123/fractional-knapsacks.html.git" class="btn btn-github" target="_blank">🔗 Repo</a> <!-- Link to GitHub code -->
                 </div> <!-- Closes card -->
                 
                 <!-- Huffman Coding Card -->
@@ -230,7 +204,6 @@
                     <p>Optimal prefix-free compression using frequency-based binary tree construction. Used in JPEG, MP3, and file compression.</p> <!-- Description -->
                     <div class="complexity-badge">⏱️ Time: O(n log n) | 💾 Space: O(n)</div> <!-- Complexity info -->
                     <a href="greedy/huffman-coding.html" class="btn">View Problem →</a> <!-- Link to problem page -->
-                    <a href="https://github.com/StevenN123/huffman-codings.git" class="btn btn-github" target="_blank">🔗 Repo</a> <!-- Link to GitHub code -->
                 </div> <!-- Closes card -->
             </div> <!-- Closes grid -->
         </div> <!-- Closes category -->
@@ -246,7 +219,6 @@
                     <p>Efficient O(n log n) stable sorting by recursively dividing and merging arrays. Guaranteed performance regardless of input.</p> <!-- Description -->
                     <div class="complexity-badge">⏱️ Time: O(n log n) | 💾 Space: O(n)</div> <!-- Complexity -->
                     <a href="divide-conquer/merge-sort.html" class="btn">View Problem →</a> <!-- Link -->
-                    <a href="https://github.com/StevenN123/Merge-Sorts.git" class="btn btn-github" target="_blank">🔗 Repo</a> <!-- Repo link -->
                 </div> <!-- Closes card -->
                 
                 <!-- Quick Sort Card -->
@@ -255,7 +227,6 @@
                     <p>In-place sorting using pivot-based partitioning. Fastest in practice with O(n log n) average time and O(log n) space.</p> <!-- Description -->
                     <div class="complexity-badge">⏱️ Time: O(n log n) avg | 💾 Space: O(log n)</div> <!-- Complexity -->
                     <a href="divide-conquer/quick-sort.html" class="btn">View Problem →</a> <!-- Link -->
-                    <a href="https://github.com/StevenN123/quick-sorts" class="btn btn-github" target="_blank">🔗 Repo</a> <!-- Repo link -->
                 </div> <!-- Closes card -->
             </div> <!-- Closes grid -->
         </div> <!-- Closes category -->
@@ -271,7 +242,6 @@
                     <p>Efficient calculation using memoization and tabulation. Demonstrates optimal substructure and overlapping subproblems.</p> <!-- Description -->
                     <div class="complexity-badge">⏱️ Time: O(n) | 💾 Space: O(1) to O(n)</div> <!-- Complexity -->
                     <a href="dp/fibonacci.html" class="btn">View Problem →</a> <!-- Link -->
-                    <a href="https://github.com/StevenN123/Fibonacci.git" class="btn btn-github" target="_blank">🔗 Repo</a> <!-- Repo link -->
                 </div> <!-- Closes card -->
                 
                 <!-- 0/1 Knapsack Card -->
@@ -280,7 +250,6 @@
                     <p>Maximize value with indivisible items. Classic DP problem solved with 2D table and space-optimized 1D array.</p> <!-- Description -->
                     <div class="complexity-badge">⏱️ Time: O(nW) | 💾 Space: O(nW)</div> <!-- Complexity -->
                     <a href="dp/knapsack01.html" class="btn">View Problem →</a> <!-- Link -->
-                    <a href="https://github.com/StevenN123/knapsack01.git" class="btn btn-github" target="_blank">🔗 Repo</a> <!-- Repo link -->
                 </div> <!-- Closes card -->
             </div> <!-- Closes grid -->
         </div> <!-- Closes category -->
@@ -296,7 +265,6 @@
                     <p>Approximate solution for Traveling Salesman Problem using evolutionary concepts: selection, crossover, and mutation.</p> <!-- Description -->
                     <div class="complexity-badge">⏱️ Time: O(g·n²) | 💾 Space: O(p·n)</div> <!-- Complexity -->
                     <a href="np/genetic-algorithm.html" class="btn">View Problem →</a> <!-- Link -->
-                    <a href="https://github.com/StevenN123/Extra-Credit-Algortihms.git" class="btn btn-github" target="_blank">🔗 Repo</a> <!-- Repo link -->
                 </div> <!-- Closes card -->
             </div> <!-- Closes grid -->
         </div> <!-- Closes category -->
@@ -306,7 +274,6 @@
             <p>📚 Complete algorithm analysis with implementations in Python</p> <!-- Footer text -->
             <p>🎓 Created for Algorithm Analysis Course - Extra Credit Part 2</p> <!-- Course info -->
             <div class="footer-links"> <!-- Footer links container -->
-                <a href="https://github.com/StevenN123/Extra-Credit-Algortihms.git" target="_blank">Main GitHub Repo</a> <!-- GitHub link -->
                 <a href="#top">Back to Top</a> <!-- Link to top of page -->
                 <a href="https://aa.github.io/algorithm-portfolio">aa.github.io</a> <!-- Portfolio link -->
             </div> <!-- Closes footer-links -->
