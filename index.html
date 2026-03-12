@@ -1,285 +1,223 @@
-<!DOCTYPE html> <!-- Declares HTML5 document type -->
-<html lang="en"> <!-- Opens HTML document with English language setting -->
-<head> <!-- Head section contains metadata and links -->
-    <meta charset="UTF-8"> <!-- Specifies character encoding as UTF-8 for proper text rendering -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes site responsive on mobile devices by setting viewport -->
-    <title>Algorithm Portfolio | aa.github.io</title> <!-- Sets browser tab title with portfolio name -->
-    <style> /* Opens CSS styles section for all styling */
-        * { /* Universal selector - applies to all elements on the page */
-            margin: 0; /* Removes default margin from all elements */
-            padding: 0; /* Removes default padding from all elements */
-            box-sizing: border-box; /* Includes padding and border in element's total width/height calculation */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0/1 Knapsack - Dynamic Programming</title>
+    <style>
+        /* Copy the same styles from fibonacci.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        body { /* Styles for the page body element */
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; /* Sets font stack for cross-platform compatibility */
-            line-height: 1.6; /* Sets line height to 1.6 times font size for better readability */
-            color: #333; /* Dark gray text color for good contrast */
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Purple gradient background from light to dark */
-            min-height: 100vh; /* Ensures body takes at least full viewport height */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
         }
         
-        .container { /* Main content container class */
-            max-width: 1200px; /* Limits width to 1200px on large screens */
-            margin: 0 auto; /* Centers container horizontally with auto margins */
-            padding: 2rem; /* Adds 2rem (32px) padding on all sides */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
         }
         
-        /* Header Section Styles */
-        .intro { /* Introduction section styling */
-            text-align: center; /* Centers all text horizontally */
-            color: white; /* White text color for contrast against gradient */
-            padding: 3rem 0; /* 3rem top/bottom padding, 0 left/right */
+        .header {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
         }
         
-        h1 { /* Main heading style */
-            font-size: 3rem; /* 48px font size (3 * 16px default) */
-            margin-bottom: 1rem; /* 16px space below heading */
-            animation: fadeIn 1s ease-in; /* Applies fade-in animation over 1 second */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
         }
         
-        .subtitle { /* Subtitle text style */
-            font-size: 1.2rem; /* 19.2px font size */
-            opacity: 0.9; /* Slight transparency at 90% opacity */
-            margin-bottom: 2rem; /* 32px space below */
+        .nav-bar {
+            margin-bottom: 2rem;
         }
         
-        /* Category Sections */
-        .category { /* Each algorithm category container */
-            background: white; /* White background for contrast */
-            border-radius: 15px; /* 15px rounded corners */
-            padding: 2rem; /* 32px internal padding */
-            margin-bottom: 2rem; /* 32px space below each category */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Drop shadow for depth */
-            transition: transform 0.3s ease; /* Smooth transform on hover */
+        .back-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #9b59b6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
         }
         
-        .category:hover { /* Category hover effect */
-            transform: translateY(-5px); /* Lifts category up by 5px */
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
         }
         
-        .category h2 { /* Category heading style */
-            color: #333; /* Dark gray color */
-            margin-bottom: 1.5rem; /* 24px space below */
-            padding-bottom: 0.5rem; /* 8px padding below text */
-            border-bottom: 3px solid; /* 3px solid border bottom */
-            font-size: 1.8rem; /* 28.8px font size */
+        h2 {
+            color: #9b59b6;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #9b59b6;
         }
         
-        /* Category-specific border colors */
-        .greedy h2 { border-bottom-color: #f39c12; } /* Orange border for greedy */
-        .divide-conquer h2 { border-bottom-color: #3498db; } /* Blue border for divide & conquer */
-        .dp h2 { border-bottom-color: #9b59b6; } /* Purple border for dynamic programming */
-        .np h2 { border-bottom-color: #e74c3c; } /* Red border for NP heuristic */
-        
-        .algorithm-grid { /* Grid container for algorithm cards */
-            display: grid; /* Uses CSS Grid layout */
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns: auto-fit, min 300px, max 1 fraction */
-            gap: 1.5rem; /* 24px gap between grid items */
+        .problem-statement {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #9b59b6;
+            margin-bottom: 1.5rem;
         }
         
-        .algorithm-card { /* Individual algorithm card style */
-            background: #f8f9fa; /* Very light gray background */
-            border-radius: 10px; /* 10px rounded corners */
-            padding: 1.5rem; /* 24px internal padding */
-            transition: all 0.3s ease; /* Smooth transition for all properties */
-            border-left: 4px solid; /* 4px left border for color coding */
-            position: relative; /* Sets positioning context for absolute elements */
-            overflow: hidden; /* Hides any content that overflows */
+        .complexity {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
         }
         
-        /* Card border colors by algorithm type */
-        .greedy .algorithm-card { border-left-color: #f39c12; } /* Orange left border for greedy */
-        .divide-conquer .algorithm-card { border-left-color: #3498db; } /* Blue for divide & conquer */
-        .dp .algorithm-card { border-left-color: #9b59b6; } /* Purple for DP */
-        .np .algorithm-card { border-left-color: #e74c3c; } /* Red for NP */
-        
-        .algorithm-card:hover { /* Card hover effect */
-            transform: translateY(-5px) scale(1.02); /* Moves up 5px and scales to 102% */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Adds shadow on hover */
+        .complexity-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #9b59b6;
         }
         
-        .algorithm-card h3 { /* Card title style */
-            font-size: 1.4rem; /* 22.4px font size */
-            margin-bottom: 1rem; /* 16px space below */
-            color: #333; /* Dark gray color */
+        .repo-card {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
         }
         
-        .algorithm-card p { /* Card paragraph style */
-            color: #666; /* Medium gray text */
-            margin-bottom: 1.5rem; /* 24px space below */
-            line-height: 1.5; /* 1.5 times font size line height */
+        .repo-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #24292e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            margin: 1rem 0;
         }
         
-        .complexity-badge { /* Complexity information badge */
-            font-size: 0.9rem; /* 14.4px font size */
-            color: #999; /* Light gray text */
-            margin-bottom: 1rem; /* 16px space below */
-            padding: 0.3rem 0; /* 4.8px vertical padding */
-            border-top: 1px dashed #ddd; /* Dashed border top */
-            border-bottom: 1px dashed #ddd; /* Dashed border bottom */
+        .repo-link:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
         }
         
-        .btn { /* Button style for links */
-            display: inline-block; /* Allows padding while staying inline */
-            padding: 0.6rem 1.2rem; /* 9.6px vertical, 19.2px horizontal padding */
-            background: #333; /* Dark gray background */
-            color: white; /* White text */
-            text-decoration: none; /* Removes underline */
-            border-radius: 5px; /* 5px rounded corners */
-            font-size: 0.9rem; /* 14.4px font size */
-            transition: background 0.3s ease; /* Smooth background color transition */
-            margin-right: 0.5rem; /* 8px right margin */
-            margin-bottom: 0.5rem; /* 8px bottom margin */
+        .math {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            text-align: center;
         }
         
-        .btn:hover { /* Button hover state */
-            background: #555; /* Lighter gray on hover */
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
         }
         
-        /* Footer Section */
-        footer { /* Page footer style */
-            text-align: center; /* Centered text */
-            color: white; /* White text */
-            padding: 3rem 0 1rem; /* 48px top, 0 sides, 16px bottom padding */
-            margin-top: 2rem; /* 32px top margin */
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
         }
         
-        .footer-links { /* Footer links container */
-            margin-top: 1rem; /* 16px top margin */
+        .nav-links .prev {
+            background: #7f8c8d;
         }
         
-        .footer-links a { /* Footer link style */
-            color: white; /* White text */
-            text-decoration: none; /* No underline */
-            margin: 0 1rem; /* 0 vertical, 16px horizontal margin */
-            opacity: 0.8; /* 80% opacity */
-            transition: opacity 0.3s ease; /* Smooth opacity transition */
+        .nav-links .next {
+            background: #9b59b6;
         }
         
-        .footer-links a:hover { /* Footer link hover */
-            opacity: 1; /* Full opacity on hover */
-            text-decoration: underline; /* Underline on hover */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .complexity { flex-direction: column; }
         }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <a href="../index.html" class="back-btn">← Back to Portfolio</a>
+        </div>
         
-        /* Animation Keyframes */
-        @keyframes fadeIn { /* Defines fade-in animation */
-            from { opacity: 0; transform: translateY(20px); } /* Start: invisible and moved down */
-            to { opacity: 1; transform: translateY(0); } /* End: visible and normal position */
-        }
+        <div class="header">
+            <h1>0/1 Knapsack Problem</h1>
+            <p class="subtitle">Dynamic Programming #2 - Classic Optimization Problem</p>
+        </div>
         
-        /* Responsive Design for Mobile */
-        @media (max-width: 768px) { /* Styles for screens smaller than 768px */
-            h1 { font-size: 2rem; } /* Smaller heading on mobile */
-            .container { padding: 1rem; } /* Less padding on mobile */
-            .algorithm-grid { grid-template-columns: 1fr; } /* Single column on mobile */
-        }
-    </style> <!-- Closes CSS section -->
-</head> <!-- Closes head section -->
-<body> <!-- Opens body section - visible content -->
-    <div class="container"> <!-- Main container div -->
-        
-        <!-- Introduction Section -->
-        <div class="intro"> <!-- Intro container -->
-            <h1>🎯 Algorithm Portfolio</h1> <!-- Main title with emoji -->
-            <p class="subtitle">7 Algorithms | 4 Paradigms | Complete Analysis</p> <!-- Subtitle with stats -->
-        </div> <!-- Closes intro -->
-        
-        <!-- Greedy Algorithms Section -->
-        <div class="category greedy"> <!-- Category container with greedy class -->
-            <h2>💰 Greedy Algorithms (2)</h2> <!-- Category title with emoji and count -->
-            <div class="algorithm-grid"> <!-- Grid for algorithm cards -->
+        <div class="section">
+            <h2>📋 Problem Description</h2>
+            
+            <div class="problem-statement">
+                <p>Given weights and values of n items, put them in a knapsack of capacity W to get the maximum total value. You cannot break items (either take the whole item or leave it).</p>
+            </div>
+            
+            <div class="math">
+                maximize Σ(vᵢ × xᵢ) subject to Σ(wᵢ × xᵢ) ≤ W, where xᵢ ∈ {0,1}
+            </div>
+            
+            <div class="complexity">
+                <div class="complexity-item">
+                    <div class="complexity-value">O(2ⁿ)</div>
+                    <div>Brute Force</div>
+                </div>
+                <div class="complexity-item">
+                    <div class="complexity-value">O(nW)</div>
+                    <div>DP (2D Table)</div>
+                </div>
+                <div class="complexity-item">
+                    <div class="complexity-value">O(nW)</div>
+                    <div>Space: O(W)</div>
+                </div>
+            </div>
+            
+            <h3>Example:</h3>
+            <div class="math">
+                Items: (weight, value): (2,3), (3,4), (4,5), (5,6)<br>
+                Capacity W = 5
+            </div>
+            <div class="math">
+                Maximum value = 7 (items 1 and 2)
+            </div>
+            
+            <!-- REPO LINK CARD -->
+            <div class="repo-card">
+                <h2>📂 View Complete Implementation on GitHub</h2>
+                <p>The full implementation with detailed code, DP table visualization, and documentation is available in the repository below:</p>
                 
-                <!-- Fractional Knapsack Card -->
-                <div class="algorithm-card"> <!-- Individual card -->
-                    <h3>Fractional Knapsack</h3> <!-- Algorithm name -->
-                    <p>Maximize value in a knapsack by taking fractions of items based on value/weight ratio. Items can be broken to fill capacity exactly.</p> <!-- Description -->
-                    <div class="complexity-badge">⏱️ Time: O(n log n) | 💾 Space: O(1)</div> <!-- Complexity info -->
-                    <a href="greedy/fractional-knapsack.html" class="btn">View Problem →</a> <!-- Link to problem page -->
-                </div> <!-- Closes card -->
+                <a href="https://github.com/StevenN123/Knapsack01.git" class="repo-link" target="_blank">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">📁</span> StevenN123/Knapsack01.git
+                </a>
                 
-                <!-- Huffman Coding Card -->
-                <div class="algorithm-card"> <!-- Individual card -->
-                    <h3>Huffman Coding</h3> <!-- Algorithm name -->
-                    <p>Optimal prefix-free compression using frequency-based binary tree construction. Used in JPEG, MP3, and file compression.</p> <!-- Description -->
-                    <div class="complexity-badge">⏱️ Time: O(n log n) | 💾 Space: O(n)</div> <!-- Complexity info -->
-                    <a href="greedy/huffman-coding.html" class="btn">View Problem →</a> <!-- Link to problem page -->
-                </div> <!-- Closes card -->
-            </div> <!-- Closes grid -->
-        </div> <!-- Closes category -->
+                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
+                    Click the link above to see the complete code, DP table visualizations, and documentation
+                </p>
+            </div>
+        </div>
         
-        <!-- Divide & Conquer Section -->
-        <div class="category divide-conquer"> <!-- Category with divide-conquer class -->
-            <h2>🔄 Divide & Conquer (2)</h2> <!-- Category title -->
-            <div class="algorithm-grid"> <!-- Grid -->
-                
-                <!-- Merge Sort Card -->
-                <div class="algorithm-card"> <!-- Card -->
-                    <h3>Merge Sort</h3> <!-- Title -->
-                    <p>Efficient O(n log n) stable sorting by recursively dividing and merging arrays. Guaranteed performance regardless of input.</p> <!-- Description -->
-                    <div class="complexity-badge">⏱️ Time: O(n log n) | 💾 Space: O(n)</div> <!-- Complexity -->
-                    <a href="divide-conquer/merge-sort.html" class="btn">View Problem →</a> <!-- Link -->
-                </div> <!-- Closes card -->
-                
-                <!-- Quick Sort Card -->
-                <div class="algorithm-card"> <!-- Card -->
-                    <h3>Quick Sort</h3> <!-- Title -->
-                    <p>In-place sorting using pivot-based partitioning. Fastest in practice with O(n log n) average time and O(log n) space.</p> <!-- Description -->
-                    <div class="complexity-badge">⏱️ Time: O(n log n) avg | 💾 Space: O(log n)</div> <!-- Complexity -->
-                    <a href="divide-conquer/quick-sort.html" class="btn">View Problem →</a> <!-- Link -->
-                </div> <!-- Closes card -->
-            </div> <!-- Closes grid -->
-        </div> <!-- Closes category -->
-        
-        <!-- Dynamic Programming Section -->
-        <div class="category dp"> <!-- Category with dp class -->
-            <h2>📊 Dynamic Programming (2)</h2> <!-- Title -->
-            <div class="algorithm-grid"> <!-- Grid -->
-                
-                <!-- Fibonacci Card -->
-                <div class="algorithm-card"> <!-- Card -->
-                    <h3>Fibonacci (DP)</h3> <!-- Title -->
-                    <p>Efficient calculation using memoization and tabulation. Demonstrates optimal substructure and overlapping subproblems.</p> <!-- Description -->
-                    <div class="complexity-badge">⏱️ Time: O(n) | 💾 Space: O(1) to O(n)</div> <!-- Complexity -->
-                    <a href="dp/fibonacci.html" class="btn">View Problem →</a> <!-- Link -->
-                </div> <!-- Closes card -->
-                
-                <!-- 0/1 Knapsack Card -->
-                <div class="algorithm-card"> <!-- Card -->
-                    <h3>0/1 Knapsack</h3> <!-- Title -->
-                    <p>Maximize value with indivisible items. Classic DP problem solved with 2D table and space-optimized 1D array.</p> <!-- Description -->
-                    <div class="complexity-badge">⏱️ Time: O(nW) | 💾 Space: O(nW)</div> <!-- Complexity -->
-                    <a href="dp/knapsack01.html" class="btn">View Problem →</a> <!-- Link -->
-                </div> <!-- Closes card -->
-            </div> <!-- Closes grid -->
-        </div> <!-- Closes category -->
-        
-        <!-- NP Heuristic Section -->
-        <div class="category np"> <!-- Category with np class -->
-            <h2>🧬 NP Heuristic (1)</h2> <!-- Title -->
-            <div class="algorithm-grid"> <!-- Grid -->
-                
-                <!-- Genetic Algorithm Card -->
-                <div class="algorithm-card"> <!-- Card -->
-                    <h3>Genetic Algorithm (TSP)</h3> <!-- Title -->
-                    <p>Approximate solution for Traveling Salesman Problem using evolutionary concepts: selection, crossover, and mutation.</p> <!-- Description -->
-                    <div class="complexity-badge">⏱️ Time: O(g·n²) | 💾 Space: O(p·n)</div> <!-- Complexity -->
-                    <a href="np/genetic-algorithm.html" class="btn">View Problem →</a> <!-- Link -->
-                </div> <!-- Closes card -->
-            </div> <!-- Closes grid -->
-        </div> <!-- Closes category -->
-        
-        <!-- Footer Section -->
-        <footer> <!-- Footer element -->
-            <p>📚 Complete algorithm analysis with implementations in Python</p> <!-- Footer text -->
-            <p>🎓 Created for Algorithm Analysis Course - Extra Credit Part 2</p> <!-- Course info -->
-            <div class="footer-links"> <!-- Footer links container -->
-                <a href="#top">Back to Top</a> <!-- Link to top of page -->
-                <a href="https://aa.github.io/algorithm-portfolio">aa.github.io</a> <!-- Portfolio link -->
-            </div> <!-- Closes footer-links -->
-            <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">© 2026 Algorithm Portfolio. All code samples are original.</p> <!-- Copyright with inline styles -->
-        </footer> <!-- Closes footer -->
-        
-    </div> <!-- Closes container -->
-</body> <!-- Closes body -->
-</html> <!-- Closes HTML document -->
+        <div class="nav-links">
+            <a href="fibonacci.html" class="prev">← Previous: Fibonacci</a>
+            <a href="../index.html" class="next">Back to Portfolio →</a>
+        </div>
+    </div>
+</body>
+</html>
