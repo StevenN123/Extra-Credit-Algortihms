@@ -1,186 +1,302 @@
-<!-- np/genetic-algorithm.html - NP Heuristic page with line-by-line comments -->
-<!DOCTYPE html> <!-- HTML5 declaration -->
-<html lang="en"> <!-- HTML document start -->
-<head> <!-- Head section -->
-    <meta charset="UTF-8"> <!-- Character encoding -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design -->
-    <title>Genetic Algorithm - NP Heuristic</title> <!-- Page title -->
-    <style> /* CSS styles start */
-        * { /* Universal reset */
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
-            box-sizing: border-box; /* Include padding in width calculation */
+<!DOCTYPE html> <!-- Declares HTML5 document type -->
+<html lang="en"> <!-- Opens HTML document with English language setting -->
+<head> <!-- Head section contains metadata and links -->
+    <meta charset="UTF-8"> <!-- Specifies character encoding as UTF-8 for proper text rendering -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes site responsive on mobile devices by setting viewport -->
+    <title>Algorithm Portfolio | aa.github.io</title> <!-- Sets browser tab title with portfolio name -->
+    <style> /* Opens CSS styles section for all styling */
+        * { /* Universal selector - applies to all elements on the page */
+            margin: 0; /* Removes default margin from all elements */
+            padding: 0; /* Removes default padding from all elements */
+            box-sizing: border-box; /* Includes padding and border in element's total width/height calculation */
         }
         
-        body { /* Body styles */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font stack */
-            line-height: 1.6; /* Line height for readability */
-            color: #333; /* Text color */
-            background: #f5f5f5; /* Light gray background */
+        body { /* Styles for the page body element */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; /* Sets font stack for cross-platform compatibility */
+            line-height: 1.6; /* Sets line height to 1.6 times font size for better readability */
+            color: #333; /* Dark gray text color for good contrast */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Purple gradient background from light to dark */
+            min-height: 100vh; /* Ensures body takes at least full viewport height */
         }
         
-        .container { /* Main container */
-            max-width: 1000px; /* Maximum width */
-            margin: 0 auto; /* Center horizontally */
-            padding: 2rem; /* Internal padding */
+        .container { /* Main content container class */
+            max-width: 1200px; /* Limits width to 1200px on large screens */
+            margin: 0 auto; /* Centers container horizontally with auto margins */
+            padding: 2rem; /* Adds 2rem (32px) padding on all sides */
         }
         
-        .header { /* Page header specific to algorithm pages */
-            background: linear-gradient(135deg, #e74c3c, #c0392b); /* Red gradient for NP */
-            color: white; /* White text */
-            padding: 2rem; /* Internal padding */
-            border-radius: 10px; /* Rounded corners */
-            margin-bottom: 2rem; /* Space below */
+        /* Header Section Styles */
+        .intro { /* Introduction section styling */
+            text-align: center; /* Centers all text horizontally */
+            color: white; /* White text color for contrast against gradient */
+            padding: 3rem 0; /* 3rem top/bottom padding, 0 left/right */
         }
         
-        h1 { /* Main heading */
-            font-size: 2.5rem; /* 40px font */
-            margin-bottom: 0.5rem; /* Space below */
+        h1 { /* Main heading style */
+            font-size: 3rem; /* 48px font size (3 * 16px default) */
+            margin-bottom: 1rem; /* 16px space below heading */
+            animation: fadeIn 1s ease-in; /* Applies fade-in animation over 1 second */
         }
         
-        h2 { /* Subheading */
-            color: #e74c3c; /* Red color for NP */
-            margin: 1.5rem 0 1rem; /* Top, right/left, bottom margins */
+        .subtitle { /* Subtitle text style */
+            font-size: 1.2rem; /* 19.2px font size */
+            opacity: 0.9; /* Slight transparency at 90% opacity */
+            margin-bottom: 2rem; /* 32px space below */
         }
         
-        .section { /* Content sections */
+        .repo-link-header { /* Repository link in header */
+            display: inline-block; /* Allows padding while staying inline */
+            padding: 0.8rem 2rem; /* 12.8px vertical, 32px horizontal padding */
             background: white; /* White background */
-            padding: 2rem; /* Internal padding */
-            border-radius: 10px; /* Rounded corners */
-            margin-bottom: 2rem; /* Space below */
+            color: #667eea; /* Purple text color matching gradient */
+            text-decoration: none; /* Removes underline from link */
+            border-radius: 50px; /* Fully rounded corners (pill shape) */
+            font-weight: bold; /* Bold text */
+            transition: transform 0.3s ease; /* Smooth transform animation on hover */
         }
         
-        .complexity { /* Complexity analysis container */
-            display: flex; /* Flexbox layout */
-            gap: 2rem; /* Space between items */
-            margin: 1rem 0; /* Vertical margin */
-            padding: 1rem; /* Internal padding */
-            background: #f8f9fa; /* Light gray background */
-            border-radius: 5px; /* Rounded corners */
+        .repo-link-header:hover { /* Hover state for header link */
+            transform: translateY(-3px); /* Moves link up by 3px on hover */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); /* Adds shadow for depth effect */
         }
         
-        .genetic-steps { /* Container for genetic algorithm steps */
-            display: grid; /* Grid layout */
-            grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
-            gap: 1rem; /* Space between grid items */
-            margin: 2rem 0; /* Vertical margin */
+        /* Category Sections */
+        .category { /* Each algorithm category container */
+            background: white; /* White background for contrast */
+            border-radius: 15px; /* 15px rounded corners */
+            padding: 2rem; /* 32px internal padding */
+            margin-bottom: 2rem; /* 32px space below each category */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Drop shadow for depth */
+            transition: transform 0.3s ease; /* Smooth transform on hover */
         }
         
-        .step { /* Individual step box */
-            text-align: center; /* Center text */
-            padding: 1rem; /* Internal padding */
-            background: #e74c3c; /* Red background */
+        .category:hover { /* Category hover effect */
+            transform: translateY(-5px); /* Lifts category up by 5px */
+        }
+        
+        .category h2 { /* Category heading style */
+            color: #333; /* Dark gray color */
+            margin-bottom: 1.5rem; /* 24px space below */
+            padding-bottom: 0.5rem; /* 8px padding below text */
+            border-bottom: 3px solid; /* 3px solid border bottom */
+            font-size: 1.8rem; /* 28.8px font size */
+        }
+        
+        /* Category-specific border colors */
+        .greedy h2 { border-bottom-color: #f39c12; } /* Orange border for greedy */
+        .divide-conquer h2 { border-bottom-color: #3498db; } /* Blue border for divide & conquer */
+        .dp h2 { border-bottom-color: #9b59b6; } /* Purple border for dynamic programming */
+        .np h2 { border-bottom-color: #e74c3c; } /* Red border for NP heuristic */
+        
+        .algorithm-grid { /* Grid container for algorithm cards */
+            display: grid; /* Uses CSS Grid layout */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns: auto-fit, min 300px, max 1 fraction */
+            gap: 1.5rem; /* 24px gap between grid items */
+        }
+        
+        .algorithm-card { /* Individual algorithm card style */
+            background: #f8f9fa; /* Very light gray background */
+            border-radius: 10px; /* 10px rounded corners */
+            padding: 1.5rem; /* 24px internal padding */
+            transition: all 0.3s ease; /* Smooth transition for all properties */
+            border-left: 4px solid; /* 4px left border for color coding */
+            position: relative; /* Sets positioning context for absolute elements */
+            overflow: hidden; /* Hides any content that overflows */
+        }
+        
+        /* Card border colors by algorithm type */
+        .greedy .algorithm-card { border-left-color: #f39c12; } /* Orange left border for greedy */
+        .divide-conquer .algorithm-card { border-left-color: #3498db; } /* Blue for divide & conquer */
+        .dp .algorithm-card { border-left-color: #9b59b6; } /* Purple for DP */
+        .np .algorithm-card { border-left-color: #e74c3c; } /* Red for NP */
+        
+        .algorithm-card:hover { /* Card hover effect */
+            transform: translateY(-5px) scale(1.02); /* Moves up 5px and scales to 102% */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Adds shadow on hover */
+        }
+        
+        .algorithm-card h3 { /* Card title style */
+            font-size: 1.4rem; /* 22.4px font size */
+            margin-bottom: 1rem; /* 16px space below */
+            color: #333; /* Dark gray color */
+        }
+        
+        .algorithm-card p { /* Card paragraph style */
+            color: #666; /* Medium gray text */
+            margin-bottom: 1.5rem; /* 24px space below */
+            line-height: 1.5; /* 1.5 times font size line height */
+        }
+        
+        .complexity-badge { /* Complexity information badge */
+            font-size: 0.9rem; /* 14.4px font size */
+            color: #999; /* Light gray text */
+            margin-bottom: 1.5rem; /* 24px space below */
+            padding: 0.3rem 0; /* 4.8px vertical padding */
+            border-top: 1px dashed #ddd; /* Dashed border top */
+            border-bottom: 1px dashed #ddd; /* Dashed border bottom */
+        }
+        
+        .btn { /* Button style for links */
+            display: inline-block; /* Allows padding while staying inline */
+            padding: 0.6rem 1.2rem; /* 9.6px vertical, 19.2px horizontal padding */
+            background: #333; /* Dark gray background */
             color: white; /* White text */
-            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* Removes underline */
+            border-radius: 5px; /* 5px rounded corners */
+            font-size: 0.9rem; /* 14.4px font size */
+            transition: background 0.3s ease; /* Smooth background color transition */
         }
         
-        .demo-container { /* Interactive demo area */
-            background: #2c3e50; /* Dark blue-gray */
-            padding: 1.5rem; /* Internal padding */
-            border-radius: 5px; /* Rounded corners */
+        .btn:hover { /* Button hover state */
+            background: #555; /* Lighter gray on hover */
+        }
+        
+        /* Footer Section */
+        footer { /* Page footer style */
+            text-align: center; /* Centered text */
             color: white; /* White text */
+            padding: 3rem 0 1rem; /* 48px top, 0 sides, 16px bottom padding */
+            margin-top: 2rem; /* 32px top margin */
         }
         
-        button { /* Button styling */
-            background: #e74c3c; /* Red background */
+        .footer-links { /* Footer links container */
+            margin-top: 1rem; /* 16px top margin */
+        }
+        
+        .footer-links a { /* Footer link style */
             color: white; /* White text */
-            border: none; /* No border */
-            padding: 0.5rem 1rem; /* Padding */
-            border-radius: 3px; /* Rounded corners */
-            cursor: pointer; /* Pointer cursor on hover */
-            margin: 0.5rem 0; /* Vertical margin */
-        }
-        
-        button:hover { /* Button hover state */
-            background: #c0392b; /* Darker red */
-        }
-        
-        .route-display { /* Display for TSP route */
-            background: #34495e; /* Slightly lighter blue-gray */
-            padding: 1rem; /* Internal padding */
-            border-radius: 5px; /* Rounded corners */
-            margin: 1rem 0; /* Vertical margin */
-            font-family: monospace; /* Monospace font */
-        }
-        
-        .fitness-graph { /* ASCII graph container */
-            background: #ecf0f1; /* Light gray */
-            padding: 1rem; /* Internal padding */
-            border-radius: 5px; /* Rounded corners */
-            color: #333; /* Dark text */
-            margin: 1rem 0; /* Vertical margin */
-        }
-        
-        .back-link { /* Link back to main page */
-            color: #666; /* Gray color */
             text-decoration: none; /* No underline */
-            display: inline-block; /* Allows padding */
-            margin-bottom: 1rem; /* Space below */
+            margin: 0 1rem; /* 0 vertical, 16px horizontal margin */
+            opacity: 0.8; /* 80% opacity */
+            transition: opacity 0.3s ease; /* Smooth opacity transition */
         }
         
-        .nav-links { /* Navigation links container */
-            display: flex; /* Flexbox */
-            justify-content: space-between; /* Space between prev/next */
-            margin-top: 2rem; /* Space above */
+        .footer-links a:hover { /* Footer link hover */
+            opacity: 1; /* Full opacity on hover */
+            text-decoration: underline; /* Underline on hover */
         }
         
-        .nav-links a { /* Navigation link styling */
-            padding: 0.5rem 1rem; /* Padding */
-            background: #333; /* Dark background */
-            color: white; /* White text */
-            text-decoration: none; /* No underline */
-            border-radius: 5px; /* Rounded corners */
+        /* Animation Keyframes */
+        @keyframes fadeIn { /* Defines fade-in animation */
+            from { opacity: 0; transform: translateY(20px); } /* Start: invisible and moved down */
+            to { opacity: 1; transform: translateY(0); } /* End: visible and normal position */
         }
-    </style> <!-- Close CSS -->
-</head> <!-- Close head -->
-<body> <!-- Open body -->
-    <div class="container"> <!-- Main container -->
-        <a href="../index.html" class="back-link">← Back to Portfolio</a> <!-- Navigation back to main -->
         
-        <div class="header"> <!-- Page header -->
-            <h1>🧬 Genetic Algorithm (TSP)</h1> <!-- Title with DNA emoji -->
-            <p>NP Heuristic - Approximating the Traveling Salesman Problem</p> <!-- Subtitle -->
-        </div> <!-- Close header -->
+        /* Responsive Design for Mobile */
+        @media (max-width: 768px) { /* Styles for screens smaller than 768px */
+            h1 { font-size: 2rem; } /* Smaller heading on mobile */
+            .container { padding: 1rem; } /* Less padding on mobile */
+            .algorithm-grid { grid-template-columns: 1fr; } /* Single column on mobile */
+        }
+    </style> <!-- Closes CSS section -->
+</head> <!-- Closes head section -->
+<body> <!-- Opens body section - visible content -->
+    <div class="container"> <!-- Main container div -->
         
-        <div class="section"> <!-- First section - Problem Description -->
-            <h2>Problem Description</h2> <!-- Section title -->
-            <p>The Traveling Salesman Problem (TSP): Find the shortest possible route that visits each city exactly once and returns to the starting city. This is NP-hard, so we use a genetic algorithm heuristic.</p> <!-- Description -->
-            
-            <div class="complexity"> <!-- Complexity container -->
-                <div class="complexity-item"> <!-- Time complexity item -->
-                    <div class="complexity-value">O(g·n²)</div> <!-- Big O: generations * cities squared -->
-                    <div>Time Complexity*</div> <!-- Label with asterisk -->
-                </div> <!-- Close time item -->
-                <div class="complexity-item"> <!-- Space complexity item -->
-                    <div class="complexity-value">O(p·n)</div> <!-- Space: population * cities -->
-                    <div>Space Complexity</div> <!-- Label -->
-                </div> <!-- Close space item -->
-                <div class="complexity-item"> <!-- Optimality item -->
-                    <div class="complexity-value">~95%</div> <!-- Average optimality percentage -->
-                    <div>Avg. Optimality</div> <!-- Label -->
-                </div> <!-- Close optimality item -->
-            </div> <!-- Close complexity -->
-            
-            <p>*where g = generations, p = population size, n = number of cities</p> <!-- Explanation of variables -->
-        </div> <!-- Close first section -->
+        <!-- Introduction Section -->
+        <div class="intro"> <!-- Intro container -->
+            <h1> Algorithm Portfolio</h1> <!-- Main title with emoji -->
+            <p class="subtitle">7 Algorithms | 4 Paradigms | Complete Analysis</p> <!-- Subtitle with stats -->
+            <a href="https://github.com/yourusername/algorithm-portfolio" class="repo-link-header" target="_blank"> View GitHub Repository</a> <!-- Repository link opens in new tab -->
+        </div> <!-- Closes intro -->
         
-        <div class="section"> <!-- Second section - Evolutionary Process -->
-            <h2>Evolutionary Process</h2> <!-- Section title -->
-            <div class="genetic-steps"> <!-- Steps container -->
-                <div class="step">1️⃣ Initialization</div> <!-- Step 1 -->
-                <div class="step">2️⃣ Selection</div> <!-- Step 2 -->
-                <div class="step">3️⃣ Crossover</div> <!-- Step 3 -->
-                <div class="step">4️⃣ Mutation</div> <!-- Step 4 -->
-                <div class="step">5️⃣ Evolution</div> <!-- Step 5 -->
-            </div> <!-- Close steps -->
-            
-            <p><strong>Algorithm Steps:</strong></p> <!-- Subheading -->
-            <ol> <!-- Ordered list -->
-                <li>Generate random population of routes</li> <!-- Step 1 -->
-                <li>Evaluate fitness (route distance)</li> <!-- Step 2 -->
-                <li>Select parents using tournament selection</li> <!-- Step 3 -->
-                <li>Apply ordered crossover (OX) to create offspring</li> <!-- Step 4 -->
-                <li>Mutate with swap mutation</li> <!-- Step 5 -->
-                <li>Replace population with new generation</li> <!-- Step 6 -->
-                <li>Repeat until convergence or max generations</li> <!-- Step 7 -->
-            </ol> <!-- Close
+        <!-- Greedy Algorithms Section -->
+        <div class="category greedy"> <!-- Category container with greedy class -->
+            <h2> Greedy Algorithms (2)</h2> <!-- Category title with emoji and count -->
+            <div class="algorithm-grid"> <!-- Grid for algorithm cards -->
+                
+                <!-- Fractional Knapsack Card -->
+                <div class="algorithm-card"> <!-- Individual card -->
+                    <h3>Fractional Knapsack</h3> <!-- Algorithm name -->
+                    <p>Maximize value in a knapsack by taking fractions of items based on value/weight ratio. Items can be broken to fill capacity exactly.</p> <!-- Description -->
+                    <div class="complexity-badge"> Time: O(n log n) | Space: O(1)</div> <!-- Complexity info -->
+                    <a href="greedy/fractional-knapsack.html" class="btn">View Problem →</a> <!-- Link to problem page -->
+                </div> <!-- Closes card -->
+                
+                <!-- Huffman Coding Card -->
+                <div class="algorithm-card"> <!-- Individual card -->
+                    <h3>Huffman Coding</h3> <!-- Algorithm name -->
+                    <p>Optimal prefix-free compression using frequency-based binary tree construction. Used in JPEG, MP3, and file compression.</p> <!-- Description -->
+                    <div class="complexity-badge"> Time: O(n log n) | Space: O(n)</div> <!-- Complexity info -->
+                    <a href="greedy/huffman-coding.html" class="btn">View Problem →</a> <!-- Link to problem page -->
+                </div> <!-- Closes card -->
+            </div> <!-- Closes grid -->
+        </div> <!-- Closes category -->
+        
+        <!-- Divide & Conquer Section -->
+        <div class="category divide-conquer"> <!-- Category with divide-conquer class -->
+            <h2> Divide & Conquer (2)</h2> <!-- Category title -->
+            <div class="algorithm-grid"> <!-- Grid -->
+                
+                <!-- Merge Sort Card -->
+                <div class="algorithm-card"> <!-- Card -->
+                    <h3>Merge Sort</h3> <!-- Title -->
+                    <p>Efficient O(n log n) stable sorting by recursively dividing and merging arrays. Guaranteed performance regardless of input.</p> <!-- Description -->
+                    <div class="complexity-badge"> Time: O(n log n) |  Space: O(n)</div> <!-- Complexity -->
+                    <a href="divide-conquer/merge-sort.html" class="btn">View Problem →</a> <!-- Link -->
+                </div> <!-- Closes card -->
+                
+                <!-- Quick Sort Card -->
+                <div class="algorithm-card"> <!-- Card -->
+                    <h3>Quick Sort</h3> <!-- Title -->
+                    <p>In-place sorting using pivot-based partitioning. Fastest in practice with O(n log n) average time and O(log n) space.</p> <!-- Description -->
+                    <div class="complexity-badge"> Time: O(n log n) avg | Space: O(log n)</div> <!-- Complexity -->
+                    <a href="divide-conquer/quick-sort.html" class="btn">View Problem →</a> <!-- Link -->
+                </div> <!-- Closes card -->
+            </div> <!-- Closes grid -->
+        </div> <!-- Closes category -->
+        
+        <!-- Dynamic Programming Section -->
+        <div class="category dp"> <!-- Category with dp class -->
+            <h2> Dynamic Programming (2)</h2> <!-- Title -->
+            <div class="algorithm-grid"> <!-- Grid -->
+                
+                <!-- Fibonacci Card -->
+                <div class="algorithm-card"> <!-- Card -->
+                    <h3>Fibonacci (DP)</h3> <!-- Title -->
+                    <p>Efficient calculation using memoization. Demonstrates optimal substructure and overlapping subproblems.</p> <!-- Description -->
+                    <div class="complexity-badge"> Time: O(n) | Space: O(1) to O(n)</div> <!-- Complexity -->
+                    <a href="dp/Fibonacci.html" class="btn">View Problem →</a> <!-- Link -->
+                </div> <!-- Closes card -->
+                
+                <!-- 0/1 Knapsack Card -->
+                <div class="algorithm-card"> <!-- Card -->
+                    <h3>0/1 Knapsack</h3> <!-- Title -->
+                    <p>Maximize value with indivisible items. Classic DP problem solved with 2D table and space-optimized 1D array.</p> <!-- Description -->
+                    <div class="complexity-badge"> Time: O(nW) | Space: O(nW)</div> <!-- Complexity -->
+                    <a href="dp/knapsack01.html" class="btn">View Problem →</a> <!-- Link -->
+                </div> <!-- Closes card -->
+            </div> <!-- Closes grid -->
+        </div> <!-- Closes category -->
+        
+        <!-- NP Heuristic Section -->
+        <div class="category np"> <!-- Category with np class -->
+            <h2> NP Heuristic (1)</h2> <!-- Title -->
+            <div class="algorithm-grid"> <!-- Grid -->
+                
+                <!-- Genetic Algorithm Card -->
+                <div class="algorithm-card"> <!-- Card -->
+                    <h3>Genetic Algorithm (TSP)</h3> <!-- Title -->
+                    <p>Approximate solution for Traveling Salesman Problem using evolutionary concepts: selection, crossover, and mutation.</p> <!-- Description -->
+                    <div class="complexity-badge"> Time: O(g·n²) | Space: O(p·n)</div> <!-- Complexity -->
+                    <a href="NP/genetic-algorithm.html" class="btn">View Problem →</a> <!-- Link to problem page -->
+                    <a href="https://github.com/StevenN123/genetic-algorithms.git" class="btn" style="background: #24292e; margin-left: 0.5rem;">GitHub Repo</a> <!-- GitHub repo link -->
+                </div> <!-- Closes card -->
+            </div> <!-- Closes grid -->
+        </div> <!-- Closes category -->
+        
+        <!-- Footer Section -->
+        <footer> <!-- Footer element -->
+            <p> Complete algorithm analysis with implementations in Python</p> <!-- Footer text -->
+            <p> Created for Algorithm Analysis Course - Extra Credit Part 2</p> <!-- Course info -->
+            <div class="footer-links"> <!-- Footer links container -->
+                <a href="https://github.com/yourusername/algorithm-portfolio">GitHub</a> <!-- GitHub link -->
+                <a href="#top">Back to Top</a> <!-- Link to top of page -->
+                <a href="https://aa.github.io/algorithm-portfolio">aa.github.io</a> <!-- Portfolio link -->
+            </div> <!-- Closes footer-links -->
+            <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">© 2026 Algorithm Portfolio. All code samples are original.</p> <!-- Copyright with inline styles -->
+        </footer> <!-- Closes footer -->
+        
+    </div> <!-- Closes container -->
+</body> <!-- Closes body -->
+</html> <!-- Closes HTML document -->
